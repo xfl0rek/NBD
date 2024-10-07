@@ -1,7 +1,7 @@
 package pl.nbd;
 
-public class Premium extends ClientType {
-    public Premium() {
+public class PremiumType extends ClientType {
+    public PremiumType() {
     }
 
     double applyDiscount(double price) {

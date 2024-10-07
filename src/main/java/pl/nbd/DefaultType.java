@@ -1,7 +1,7 @@
 package pl.nbd;
 
-public class Default extends ClientType {
-    public Default() {
+public class DefaultType extends ClientType {
+    public DefaultType() {
     }
 
     double applyDiscount(double price) {

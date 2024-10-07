@@ -56,13 +56,6 @@
             <artifactId>hibernate-core</artifactId>
             <version>5.6.11.Final</version>
         </dependency>
-
-        <dependency>
-            <groupId>org.apache.derby</groupId>
-            <artifactId>derby</artifactId>
-            <version>10.13.1.1</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <build>
