@@ -54,4 +54,8 @@ public class Client {
     public void setClientType(ClientType clientType) {
         this.clientType = clientType;
     }
+
+    public double applyDiscount(double price) {
+        return clientType.applyDiscount(price);
+    }
 }

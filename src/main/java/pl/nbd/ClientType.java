@@ -4,5 +4,5 @@ public abstract class ClientType {
     public ClientType() {
     }
 
-    abstract double applyDiscount();
+    abstract double applyDiscount(double price);
 }
