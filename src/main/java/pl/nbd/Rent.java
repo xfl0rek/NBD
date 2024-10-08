@@ -9,10 +9,10 @@ import java.util.UUID;
 @Getter
 public class Rent {
 
-    private UUID id;
-    private Client client;
-    private Room room;
-    private LocalDateTime beginTime;
+    private final UUID id;
+    private final Client client;
+    private final Room room;
+    private final LocalDateTime beginTime;
     private LocalDateTime endTime;
     private double rentCost;
 
