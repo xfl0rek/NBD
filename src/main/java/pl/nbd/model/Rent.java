@@ -1,28 +1,64 @@
 package pl.nbd.model;
 
-import lombok.Getter;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
-@Getter
+@Entity
 public class Rent {
 
-    private final UUID id;
-    private final Client client;
-    private final Room room;
-    private final LocalDateTime beginTime;
+    @Id
+    private long id;
+    @ManyToOne
+    private Client client;
+    @ManyToOne
+    private Room room;
+    @Column(name = "begin_time")
+    private LocalDateTime beginTime;
+    @Column(name = "end_time")
     private LocalDateTime endTime;
+    @Column(name = "rent_cost")
     private double rentCost;
 
-    public Rent(UUID id, Client client, Room room, LocalDateTime beginTime) {
+    public Rent(long id, Client client, Room room, LocalDateTime beginTime) {
         this.id = id;
         this.client = client;
         this.room = room;
         this.beginTime = (beginTime == null) ? LocalDateTime.now() : beginTime;
         this.endTime = null;
         this.rentCost = 0;
+    }
+
+    public Rent() {
+
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public LocalDateTime getBeginTime() {
+        return beginTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public double getRentCost() {
+        return rentCost;
     }
 
     public void endRent(LocalDateTime endTime) {

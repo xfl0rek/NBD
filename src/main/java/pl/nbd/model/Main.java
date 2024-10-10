@@ -6,6 +6,7 @@ import jakarta.persistence.Persistence;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Random;
 import java.util.UUID;
 
 public class Main {
@@ -18,7 +19,8 @@ public class Main {
         DefaultType defaultType = new DefaultType();
         Client client = new Client("Cristiano", "Ronaldo", address, premiumType);
         Room room = new Room(1000, 7, 2);
-        Rent rent = new Rent(UUID.randomUUID(), client, room, LocalDateTime.now());
+        Random random = new Random();
+        Rent rent = new Rent(random.nextLong(), client, room, LocalDateTime.now());
         LocalDateTime endTime = LocalDateTime.now().plus(Duration.ofHours(168));
         rent.endRent(endTime);
 
