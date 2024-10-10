@@ -16,7 +16,7 @@ public class Main {
         Address address = new Address("Real", "Madryt", "7");
         PremiumType premiumType = new PremiumType();
         DefaultType defaultType = new DefaultType();
-        Client client = new Client("Cristiano", "Ronaldo", "123456789", address, premiumType);
+        Client client = new Client("Cristiano", "Ronaldo", address, premiumType);
         Room room = new Room(1000, 7, 2);
         Rent rent = new Rent(UUID.randomUUID(), client, room, LocalDateTime.now());
         LocalDateTime endTime = LocalDateTime.now().plus(Duration.ofHours(168));

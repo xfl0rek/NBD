@@ -6,6 +6,8 @@
   <persistence-unit name="default" transaction-type="RESOURCE_LOCAL">
     <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
     <class>pl.nbd.model.Client</class>
+    <class>pl.nbd.model.Room</class>
+<!--    <class>pl.nbd.model.Address</class>-->
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <shared-cache-mode>NONE</shared-cache-mode>
 <!--    <validation-mode>CALLBACK</validation-mode>-->
@@ -15,11 +17,9 @@
       <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
       <property name="jakarta.persistence.jdbc.user" value="nbd"/>
       <property name="jakarta.persistence.jdbc.password" value="nbdpassword"/>
-
-      <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
-
       <property name="hibernate.hbm2ddl.auto" value="update"/>
-      <property name="hibernate.show_sql" value="true"/>
+<property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/>
+
     </properties>
   </persistence-unit>
 </persistence>

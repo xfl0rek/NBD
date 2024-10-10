@@ -1,9 +1,19 @@
 package pl.nbd.model;
 
+import jakarta.persistence.Access;
+import jakarta.persistence.AccessType;
+import jakarta.persistence.Embeddable;
+
+
+@Embeddable
+@Access(AccessType.FIELD)
 public class Address {
     private String street;
     private String city;
     private String number;
+
+    public Address() {
+    }
 
     public Address(String street, String city, String number) {
         this.street = street;
