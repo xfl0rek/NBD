@@ -1,4 +1,4 @@
-package pl.nbd;
+package pl.nbd.model;
 
 public abstract class ClientType {
     public ClientType() {

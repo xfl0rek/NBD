@@ -1,4 +1,4 @@
-package pl.nbd;
+package pl.nbd.model;
 
 public class Address {
     private String street;
