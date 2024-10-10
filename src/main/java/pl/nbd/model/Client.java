@@ -1,8 +1,5 @@
 package pl.nbd.model;
 
-//import jakarta.persistence.Access;
-//import jakarta.persistence.Entity;
-//import jakarta.persistence.Inheritance;
 import jakarta.persistence.*;
 
 @Entity

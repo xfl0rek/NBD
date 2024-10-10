@@ -27,6 +27,8 @@ public class Main {
         try (EntityManager em = entityManagerFactory.createEntityManager()) {
             em.getTransaction().begin();
             em.persist(client);
+            em.persist(room);
+            em.persist(rent);
             em.getTransaction().commit();
         }
 
