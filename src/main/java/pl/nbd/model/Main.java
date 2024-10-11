@@ -1,6 +1,7 @@
 package pl.nbd.model;
 
 import pl.nbd.repository.ClientRepository;
+import pl.nbd.repository.RoomRepository;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -9,6 +10,7 @@ import java.util.Random;
 public class Main {
     public static void main(String[] args) {
         ClientRepository clientRepository  = new ClientRepository();
+        RoomRepository roomRepository = new RoomRepository();
 
         Address address = new Address("Real", "Madryt", "9");
         Random random = new Random();
@@ -35,6 +37,24 @@ public class Main {
 
         Room room = new RoomRegular(1000, 9, 2, true);
         Room room2 = new RoomChildren(1000, 10, 2, 3);
+
+        roomRepository.create(room);
+        roomRepository.create(room2);
+
+        Room readRoom = roomRepository.read(room.getRoomNumber());
+        System.out.println("Odczytano pokój: " + readRoom.getRoomNumber());
+
+        room.setRoomCapacity(3);
+        roomRepository.update(room);
+        Room updatedRoom = roomRepository.read(room.getRoomNumber());
+        System.out.println("Zaktualizowano pokój o numerze " + updatedRoom.getRoomNumber() + " z pojemnością " + updatedRoom.getRoomCapacity());
+
+        roomRepository.delete(room2);
+        Room deletedRoom = roomRepository.read(room2.getRoomNumber());
+        if (deletedRoom == null) {
+            System.out.println("Pokój o numerze " + room2.getRoomNumber() + " został usunięty.");
+        }
+
         Rent rent = new Rent(random.nextLong(), client, room, LocalDateTime.now());
         Rent rent1 = new Rent(random.nextLong(), client1, room2, LocalDateTime.now());
         LocalDateTime endTime = LocalDateTime.now().plus(Duration.ofHours(168));

@@ -11,7 +11,7 @@ public abstract class Room {
     @Column(name = "base_price")
     private int basePrice;
     @Id
-    private int roomNumber;
+    private long roomNumber;
     @Column(name = "room_capacity")
     private int roomCapacity;
     @Column(name = "is_archive")
@@ -36,7 +36,7 @@ public abstract class Room {
         return basePrice;
     }
 
-    public int getRoomNumber() {
+    public long getRoomNumber() {
         return roomNumber;
     }
 
@@ -50,5 +50,9 @@ public abstract class Room {
 
     public void setArchive(boolean status) {
         this.isArchive = true;
+    }
+
+    public void setRoomCapacity(int roomCapacity) {
+        this.roomCapacity = roomCapacity;
     }
 }
