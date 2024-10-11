@@ -57,6 +57,10 @@ public class Rent {
         return rentCost;
     }
 
+    public void setRentCost(double rentCost) {
+        this.rentCost = rentCost;
+    }
+
     public void endRent(LocalDateTime endTime) {
         if (this.endTime == null) {
             if (endTime == null) {

@@ -1,6 +1,7 @@
 package pl.nbd.model;
 
 import pl.nbd.repository.ClientRepository;
+import pl.nbd.repository.RentRepository;
 import pl.nbd.repository.RoomRepository;
 
 import java.time.Duration;
@@ -11,6 +12,7 @@ public class Main {
     public static void main(String[] args) {
         ClientRepository clientRepository  = new ClientRepository();
         RoomRepository roomRepository = new RoomRepository();
+        RentRepository rentRepository = new RentRepository();
 
         Address address = new Address("Real", "Madryt", "9");
         Random random = new Random();
@@ -29,8 +31,8 @@ public class Main {
         Client read2 = clientRepository.read(client.getPersonalID());
         System.out.println("Odczytano klienta: " + read2.getFirstName() + " " + read2.getLastName());
 
-        clientRepository.delete(client);
-        Client read3 = clientRepository.read(client.getPersonalID());
+        clientRepository.delete(client1);
+        Client read3 = clientRepository.read(client1.getPersonalID());
         if (read3 == null) {
             System.out.println("Klient został usunięty.");
         }
@@ -56,14 +58,26 @@ public class Main {
         }
 
         Rent rent = new Rent(random.nextLong(), client, room, LocalDateTime.now());
-        Rent rent1 = new Rent(random.nextLong(), client1, room2, LocalDateTime.now());
+        Rent rent1 = new Rent(random.nextLong(), client, room, LocalDateTime.now());
         LocalDateTime endTime = LocalDateTime.now().plus(Duration.ofHours(168));
         rent.endRent(endTime);
         rent1.endRent(endTime);
 
-        System.out.println("Liczba dni wynajmu: " + rent.getRentDays());
-        System.out.println("Ostateczny koszt wynajmu: " + rent.getRentCost());
-        System.out.println("Ostateczny koszt wynajmu: " + rent1.getRentCost());
-        System.out.println(room.getRoomCapacity());
+        rentRepository.create(rent);
+        rentRepository.create(rent1);
+
+        Rent readRent = rentRepository.read(rent.getId());
+        System.out.println("Odczytano wynajem o ID: " + readRent.getId() + ", liczba dni: " + readRent.getRentDays() + ", koszt wynajmu: " + readRent.getRentCost());
+
+        rent.setRentCost(1500);
+        rentRepository.update(rent);
+        Rent updatedRent = rentRepository.read(rent.getId());
+        System.out.println("Zaktualizowano wynajem o ID: " + updatedRent.getId() + ", nowy koszt: " + updatedRent.getRentCost());
+
+        rentRepository.delete(rent1);
+        Rent deletedRent = rentRepository.read(rent1.getId());
+        if (deletedRent == null) {
+            System.out.println("Wynajem o ID: " + rent1.getId() + " został usunięty.");
+        }
     }
 }
