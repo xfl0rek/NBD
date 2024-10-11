@@ -56,7 +56,5 @@ public abstract class Client {
         this.address = address;
     }
 
-//    public double applyDiscount(double price) {
-//        return clientType.applyDiscount(price);
-//    }
+    abstract double applyDiscount(double price);
 }

@@ -11,8 +11,8 @@
     <class>pl.nbd.model.RoomRegular</class>
     <class>pl.nbd.model.RoomChildren</class>
     <class>pl.nbd.model.Rent</class>
-    <class>pl.nbd.model.PremiumType</class>
-    <class>pl.nbd.model.DefaultType</class>
+    <class>pl.nbd.model.PremiumClient</class>
+    <class>pl.nbd.model.DefaultClient</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <shared-cache-mode>NONE</shared-cache-mode>
 <!--    <validation-mode>CALLBACK</validation-mode>-->
