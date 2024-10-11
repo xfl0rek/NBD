@@ -2,7 +2,7 @@ package pl.nbd.model;
 
 import jakarta.persistence.Entity;
 
-@Entity(name = "premium_type")
+@Entity
 public class PremiumClient extends Client {
     public PremiumClient(long personalID, String firstName, String lastName, Address address) {
         super(personalID, firstName, lastName, address);
