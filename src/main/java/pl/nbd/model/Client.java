@@ -13,6 +13,8 @@ public abstract class Client {
     private String firstName;
     @Column(name = "last_name")
     private String lastName;
+    @Column(name = "is_archive")
+    private boolean isArchive = false;
 
     @Embedded
     private Address address;
@@ -50,6 +52,14 @@ public abstract class Client {
 
     public Address getAddress() {
         return address;
+    }
+
+    public boolean isArchive() {
+        return isArchive;
+    }
+
+    public void setArchive(boolean status) {
+        this.isArchive = true;
     }
 
     public void setAddress(Address address) {

@@ -1,5 +1,6 @@
 package pl.nbd.model;
 
+import pl.nbd.managers.ClientManager;
 import pl.nbd.repository.ClientRepository;
 import pl.nbd.repository.RentRepository;
 import pl.nbd.repository.RoomRepository;
@@ -13,29 +14,29 @@ public class Main {
         ClientRepository clientRepository  = new ClientRepository();
         RoomRepository roomRepository = new RoomRepository();
         RentRepository rentRepository = new RentRepository();
+        ClientManager clientManager = new ClientManager(clientRepository);
 
         Address address = new Address("Real", "Madryt", "9");
         Random random = new Random();
-        Client client = new PremiumClient(100_000_000L + random.nextInt(900_000_000), "Cristiano", "Ronaldo", address);
-        Client client1 = new DefaultClient(100_000_000L + random.nextInt(900_000_000), "Leo", "Messi", address);
+        Client client = clientManager.registerClient(123456789, "Cristiano", "Ronaldo", address, "premium");
+        Client client1 = clientManager.registerClient(987654321, "Leo", "Messi", address, "default");
 
-        clientRepository.create(client);
-        clientRepository.create(client1);
+        System.out.println("Zarejestrowano klientów:");
+        System.out.println(client.getFirstName() + " " + client.getLastName());
+        System.out.println(client1.getFirstName() + " " + client1.getLastName());
 
-        Client read = clientRepository.read(client.getPersonalID());
-        System.out.println("Odczytano klienta: " + read.getFirstName() + " " + read.getLastName());
+        System.out.println(clientManager.getClient(123456789));
 
-        client.setFirstName("Vinicius");
-        client.setLastName("Junior");
-        clientRepository.update(client);
-        Client read2 = clientRepository.read(client.getPersonalID());
-        System.out.println("Odczytano klienta: " + read2.getFirstName() + " " + read2.getLastName());
-
-        clientRepository.delete(client1);
-        Client read3 = clientRepository.read(client1.getPersonalID());
-        if (read3 == null) {
-            System.out.println("Klient został usunięty.");
+        clientManager.deleteClient(987654321);
+        if (clientManager.getClient(987654321) == null) {
+            System.out.println("Ununięto klienta.");
         }
+
+        clientManager.updateClientInformation(123456789, "Vinicius", "Junior", address, "default");
+        System.out.println("Zaktualizowano info o kliencie: " + client.getFirstName() + " " + client.getLastName());
+
+        clientManager.unregisterClient(client);
+        System.out.println("Zarchiwizowano klienta: " + client.isArchive());
 
         Room room = new RoomRegular(1000, 9, 2, true);
         Room room2 = new RoomChildren(1000, 10, 2, 3);
