@@ -4,7 +4,10 @@ package pl.nbd.model;
 import jakarta.persistence.*;
 
 @Entity
-public class Room {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "room_type")
+@Access(AccessType.FIELD)
+public abstract class Room {
     @Column(name = "base_price")
     private int basePrice;
     @Id

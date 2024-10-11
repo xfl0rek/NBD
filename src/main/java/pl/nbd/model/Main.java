@@ -14,25 +14,31 @@ public class Main {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
 
 
-        Address address = new Address("Real", "Madryt", "7");
+        Address address = new Address("Real", "Madryt", "9");
         PremiumType premiumType = new PremiumType();
         DefaultType defaultType = new DefaultType();
         Client client = new Client("Cristiano", "Ronaldo", address, premiumType);
-        Room room = new Room(1000, 7, 2);
+        Room room = new RoomRegular(1000, 9, 2, true);
+        Room room2 = new RoomChildren(1000, 10, 2, 3);
         Random random = new Random();
         Rent rent = new Rent(random.nextLong(), client, room, LocalDateTime.now());
         LocalDateTime endTime = LocalDateTime.now().plus(Duration.ofHours(168));
         rent.endRent(endTime);
 
+
         try (EntityManager em = entityManagerFactory.createEntityManager()) {
             em.getTransaction().begin();
             em.persist(client);
             em.persist(room);
+            em.persist(room2);
             em.persist(rent);
             em.getTransaction().commit();
         }
 
+
+
         System.out.println("Liczba dni wynajmu: " + rent.getRentDays());
         System.out.println("Ostateczny koszt wynajmu: " + rent.getRentCost());
+        System.out.println(room.getRoomCapacity());
     }
 }

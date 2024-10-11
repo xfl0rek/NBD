@@ -8,13 +8,15 @@
     <class>pl.nbd.model.Client</class>
 <!--    <class>pl.nbd.model.DefaultType</class>-->
     <class>pl.nbd.model.Room</class>
+    <class>pl.nbd.model.RoomRegular</class>
+    <class>pl.nbd.model.RoomChildren</class>
     <class>pl.nbd.model.Rent</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <shared-cache-mode>NONE</shared-cache-mode>
 <!--    <validation-mode>CALLBACK</validation-mode>-->
     
     <properties>
-      <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://172.27.154.130:5432/nbddb"/>
+      <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/nbddb"/>
       <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
       <property name="jakarta.persistence.jdbc.user" value="nbd"/>
       <property name="jakarta.persistence.jdbc.password" value="nbdpassword"/>
