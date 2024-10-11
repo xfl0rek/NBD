@@ -17,10 +17,10 @@ public class Main {
         Address address = new Address("Real", "Madryt", "9");
         PremiumType premiumType = new PremiumType();
         DefaultType defaultType = new DefaultType();
-        Client client = new Client("Cristiano", "Ronaldo", address, premiumType);
+        Random random = new Random();
+        Client client = new DefaultType(random.nextLong(), "Cristiano", "Ronaldo", address);
         Room room = new RoomRegular(1000, 9, 2, true);
         Room room2 = new RoomChildren(1000, 10, 2, 3);
-        Random random = new Random();
         Rent rent = new Rent(random.nextLong(), client, room, LocalDateTime.now());
         LocalDateTime endTime = LocalDateTime.now().plus(Duration.ofHours(168));
         rent.endRent(endTime);

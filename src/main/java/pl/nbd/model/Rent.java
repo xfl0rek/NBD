@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 
 @Entity
 public class Rent {
-
     @Id
     private long id;
     @ManyToOne
@@ -69,7 +68,7 @@ public class Rent {
                     this.endTime = beginTime;
                 }
             }
-            this.rentCost = calculateRentCost();
+//            this.rentCost = calculateRentCost();
         }
     }
 
@@ -88,7 +87,7 @@ public class Rent {
         return days;
     }
 
-    private double calculateRentCost() {
-        return Math.round(100 * client.applyDiscount(getRentDays() * room.getBasePrice())) / 100.0;
-    }
+//    private double calculateRentCost() {
+//        return Math.round(100 * client.applyDiscount(getRentDays() * room.getBasePrice())) / 100.0;
+//    }
 }

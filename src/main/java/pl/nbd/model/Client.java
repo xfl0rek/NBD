@@ -6,10 +6,8 @@ import jakarta.persistence.*;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "client_type")
 @Access(AccessType.FIELD)
-
-public class Client {
+public abstract class Client {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private long personalID;
     @Column(name = "first_name")
     private String firstName;
@@ -18,17 +16,15 @@ public class Client {
 
     @Embedded
     private Address address;
-    @Embedded
-    private ClientType clientType;
 
     public Client() {
     }
 
-    public Client(String firstName, String lastName, Address address, ClientType clientType) {
+    public Client(long personalID, String firstName, String lastName, Address address) {
+        this.personalID = personalID;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
-        this.clientType = clientType;
     }
 
     public String getFirstName() {
@@ -60,15 +56,7 @@ public class Client {
         this.address = address;
     }
 
-    public ClientType getClientType() {
-        return clientType;
-    }
-
-    public void setClientType(ClientType clientType) {
-        this.clientType = clientType;
-    }
-
-    public double applyDiscount(double price) {
-        return clientType.applyDiscount(price);
-    }
+//    public double applyDiscount(double price) {
+//        return clientType.applyDiscount(price);
+//    }
 }

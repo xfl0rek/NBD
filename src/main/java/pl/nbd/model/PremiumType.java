@@ -1,14 +1,13 @@
 package pl.nbd.model;
 
-import jakarta.persistence.Access;
-import jakarta.persistence.AccessType;
-import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
-@Entity
-@Access(AccessType.FIELD)
-@DiscriminatorValue("premium_type")
-public class PremiumType extends ClientType {
+@Entity(name = "premium_type")
+public class PremiumType extends Client {
+    public PremiumType(long personalID, String firstName, String lastName, Address address) {
+        super(personalID, firstName, lastName, address);
+    }
+
     public PremiumType() {
     }
 

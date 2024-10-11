@@ -3,7 +3,7 @@ package pl.nbd.model;
 import jakarta.persistence.Entity;
 
 @Entity(name = "RoomChildren")
-public class RoomChildren extends Room{
+public class RoomChildren extends Room {
     private int numberOfChildren;
 
     public RoomChildren(int basePrice, int roomNumber, int roomCapacity, int numberOfChildren) {
