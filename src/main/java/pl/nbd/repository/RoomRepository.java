@@ -44,4 +44,14 @@ public class RoomRepository implements Repository<Room> {
             entityManager.getTransaction().commit();
         }
     }
+
+    public Room lockRoom(long roomNumber) {
+        try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
+            entityManager.getTransaction().begin();
+            Room room = entityManager.find(Room.class, roomNumber);
+            entityManager.lock(room, jakarta.persistence.LockModeType.PESSIMISTIC_WRITE);
+//            entityManager.getTransaction().commit();
+            return room;
+        }
+    }
 }

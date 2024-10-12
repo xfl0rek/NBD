@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Entity
 public class Rent {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @ManyToOne
     private Client client;
@@ -20,8 +21,11 @@ public class Rent {
     @Column(name = "rent_cost")
     private double rentCost;
 
-    public Rent(long id, Client client, Room room, LocalDateTime beginTime) {
-        this.id = id;
+    @Column(name = "is_archive")
+    private boolean isArchive = false;
+
+    public Rent(Client client, Room room, LocalDateTime beginTime) {
+
         this.client = client;
         this.room = room;
         this.beginTime = (beginTime == null) ? LocalDateTime.now() : beginTime;
@@ -61,6 +65,14 @@ public class Rent {
         this.rentCost = rentCost;
     }
 
+    public boolean isArchive() {
+        return isArchive;
+    }
+
+    public void setArchive(boolean status) {
+        this.isArchive = status;
+    }
+
     public void endRent(LocalDateTime endTime) {
         if (this.endTime == null) {
             if (endTime == null) {
@@ -72,6 +84,7 @@ public class Rent {
                     this.endTime = beginTime;
                 }
             }
+            this.setArchive(true);
             this.rentCost = calculateRentCost();
         }
     }

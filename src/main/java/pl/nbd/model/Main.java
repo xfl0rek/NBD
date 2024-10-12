@@ -1,12 +1,16 @@
 package pl.nbd.model;
 
+import jakarta.persistence.criteria.CriteriaQuery;
 import pl.nbd.managers.ClientManager;
+import pl.nbd.managers.RentManager;
+import pl.nbd.managers.RoomManager;
 import pl.nbd.repository.ClientRepository;
 import pl.nbd.repository.RentRepository;
 import pl.nbd.repository.RoomRepository;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Main {
@@ -15,7 +19,10 @@ public class Main {
         RoomRepository roomRepository = new RoomRepository();
         RentRepository rentRepository = new RentRepository();
         ClientManager clientManager = new ClientManager(clientRepository);
+        RoomManager roomManager = new RoomManager(roomRepository);
+        RentManager rentManager = new RentManager(rentRepository);
 
+        //Rejestracja klientow
         Address address = new Address("Real", "Madryt", "9");
         Random random = new Random();
         Client client = clientManager.registerClient(123456789, "Cristiano", "Ronaldo", address, "premium");
@@ -29,7 +36,7 @@ public class Main {
 
         clientManager.deleteClient(987654321);
         if (clientManager.getClient(987654321) == null) {
-            System.out.println("Ununięto klienta.");
+            System.out.println("Usunieto klienta.");
         }
 
         clientManager.updateClientInformation(123456789, "Vinicius", "Junior", address, "default");
@@ -38,47 +45,58 @@ public class Main {
         clientManager.unregisterClient(client);
         System.out.println("Zarchiwizowano klienta: " + client.isArchive());
 
-        Room room = new RoomRegular(1000, 9, 2, true);
-        Room room2 = new RoomChildren(1000, 10, 2, 3);
+        //Rejestracja pokoi
+        roomManager.registerRoom(1000, 9, 2, true);
+        roomManager.registerRoom(1000, 10, 2, 3);
 
-        roomRepository.create(room);
-        roomRepository.create(room2);
 
-        Room readRoom = roomRepository.read(room.getRoomNumber());
-        System.out.println("Odczytano pokój: " + readRoom.getRoomNumber());
 
-        room.setRoomCapacity(3);
-        roomRepository.update(room);
-        Room updatedRoom = roomRepository.read(room.getRoomNumber());
+
+
+        Room room9 = roomManager.getRoom(9);
+        Room room10 = roomManager.getRoom(10);
+        System.out.println("Odczytano pokój: " + room9.getRoomNumber() +", pojemność: " + room9.getRoomCapacity());
+
+        roomManager.updateRoomInformation(9, 1500, 3, true);
+        Room updatedRoom = roomManager.getRoom(9);
         System.out.println("Zaktualizowano pokój o numerze " + updatedRoom.getRoomNumber() + " z pojemnością " + updatedRoom.getRoomCapacity());
 
-        roomRepository.delete(room2);
-        Room deletedRoom = roomRepository.read(room2.getRoomNumber());
+        roomManager.deleteRoom(10);
+        Room deletedRoom = roomManager.getRoom(10);
         if (deletedRoom == null) {
-            System.out.println("Pokój o numerze " + room2.getRoomNumber() + " został usunięty.");
+            System.out.println("Pokój o numerze 10" + " został usunięty.");
         }
 
-        Rent rent = new Rent(random.nextLong(), client, room, LocalDateTime.now());
-        Rent rent1 = new Rent(random.nextLong(), client, room, LocalDateTime.now());
+
+
+
+
+        //Wynajem
+        room9 = roomRepository.lockRoom(9);
+        rentManager.rentRoom(client, room9, LocalDateTime.now());
+        System.out.println("123");
+        Rent rent = rentManager.getRent(1);
+        rentManager.rentRoom(client1, room9, LocalDateTime.now());
+        Rent rent1 = rentManager.getRent(2);
+        if (rent1 == null) {
+            System.out.println("Nie można wynająć pokoju.");
+        }
         LocalDateTime endTime = LocalDateTime.now().plus(Duration.ofHours(168));
-        rent.endRent(endTime);
-        rent1.endRent(endTime);
+        rentManager.returnRoom(1, endTime);
 
-        rentRepository.create(rent);
-        rentRepository.create(rent1);
 
-        Rent readRent = rentRepository.read(rent.getId());
+        Rent readRent = rentManager.getRent(1);
         System.out.println("Odczytano wynajem o ID: " + readRent.getId() + ", liczba dni: " + readRent.getRentDays() + ", koszt wynajmu: " + readRent.getRentCost());
-
-        rent.setRentCost(1500);
-        rentRepository.update(rent);
-        Rent updatedRent = rentRepository.read(rent.getId());
-        System.out.println("Zaktualizowano wynajem o ID: " + updatedRent.getId() + ", nowy koszt: " + updatedRent.getRentCost());
-
-        rentRepository.delete(rent1);
-        Rent deletedRent = rentRepository.read(rent1.getId());
-        if (deletedRent == null) {
-            System.out.println("Wynajem o ID: " + rent1.getId() + " został usunięty.");
-        }
+//
+//        rent.setRentCost(1500);
+//        rentRepository.update(rent);
+//        Rent updatedRent = rentRepository.read(rent.getId());
+//        System.out.println("Zaktualizowano wynajem o ID: " + updatedRent.getId() + ", nowy koszt: " + updatedRent.getRentCost());
+//
+//        rentRepository.delete(rent1);
+//        Rent deletedRent = rentRepository.read(rent1.getId());
+//        if (deletedRent == null) {
+//            System.out.println("Wynajem o ID: " + rent1.getId() + " został usunięty.");
+//        }
     }
 }

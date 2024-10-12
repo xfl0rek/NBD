@@ -3,7 +3,12 @@ package pl.nbd.repository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import org.hibernate.Criteria;
 import pl.nbd.model.Client;
+
+import java.util.ArrayList;
 
 public class ClientRepository implements Repository<Client> {
     EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
@@ -44,4 +49,15 @@ public class ClientRepository implements Repository<Client> {
             entityManager.getTransaction().commit();
         }
     }
+
+
+
+//    @Override
+//    public ArrayList<Client> findBy(CriteriaQuery criteria) {
+//        try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
+//
+//
+//            return entityManager.createQuery("SELECT c FROM Client c", Client.class).getResultList();
+//        }
+//    }
 }
