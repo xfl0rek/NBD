@@ -5,10 +5,13 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import org.hibernate.Criteria;
 import pl.nbd.model.Client;
+import pl.nbd.model.Rent;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ClientRepository implements Repository<Client> {
     EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
@@ -50,14 +53,15 @@ public class ClientRepository implements Repository<Client> {
         }
     }
 
+    @Override
+    public List<Client> getAll() {
+        try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
+            CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+            CriteriaQuery<Client> query = criteriaBuilder.createQuery(Client.class);
+            Root<Client> root = query.from(Client.class);
+            query.select(root);
 
-
-//    @Override
-//    public ArrayList<Client> findBy(CriteriaQuery criteria) {
-//        try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
-//
-//
-//            return entityManager.createQuery("SELECT c FROM Client c", Client.class).getResultList();
-//        }
-//    }
+            return entityManager.createQuery(query).getResultList();
+        }
+    }
 }

@@ -5,8 +5,6 @@ import pl.nbd.model.RoomChildren;
 import pl.nbd.model.RoomRegular;
 import pl.nbd.repository.RoomRepository;
 
-import java.util.List;
-
 public class RoomManager {
     private final RoomRepository roomRepository;
 

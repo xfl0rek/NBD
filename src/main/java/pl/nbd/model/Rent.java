@@ -4,11 +4,11 @@ import jakarta.persistence.*;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 public class Rent {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @ManyToOne
     private Client client;
@@ -24,8 +24,8 @@ public class Rent {
     @Column(name = "is_archive")
     private boolean isArchive = false;
 
-    public Rent(Client client, Room room, LocalDateTime beginTime) {
-
+    public Rent(long id, Client client, Room room, LocalDateTime beginTime) {
+        this.id = id;
         this.client = client;
         this.room = room;
         this.beginTime = (beginTime == null) ? LocalDateTime.now() : beginTime;
@@ -106,5 +106,18 @@ public class Rent {
 
     private double calculateRentCost() {
         return Math.round(100 * client.applyDiscount(getRentDays() * room.getBasePrice())) / 100.0;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Rent rent = (Rent) o;
+        return id == rent.id && Double.compare(rentCost, rent.rentCost) == 0 && isArchive == rent.isArchive && Objects.equals(client, rent.client) && Objects.equals(room, rent.room) && Objects.equals(beginTime, rent.beginTime) && Objects.equals(endTime, rent.endTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, client, room, beginTime, endTime, rentCost, isArchive);
     }
 }

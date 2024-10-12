@@ -15,30 +15,16 @@ public class RentRepository implements Repository<Rent> {
     EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
 
 
-    public void createReservation(Client client, Room room, LocalDateTime startDate) {
+    public void createReservation(long id, Client client, Room room, LocalDateTime startDate) {
         try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
             entityManager.getTransaction().begin();
-//            entityManager.lock(room, LockModeType.PESSIMISTIC_WRITE);
-            Rent rent = new Rent(client, room, startDate);
+            Room managedRoom = entityManager.find(Room.class, room.getRoomNumber());
+            entityManager.lock(managedRoom, LockModeType.PESSIMISTIC_WRITE);
+            Rent rent = new Rent(id, client, managedRoom, startDate);
             entityManager.persist(rent);
             entityManager.getTransaction().commit();
         }
     }
-//
-//    public Rent endRent(long id, LocalDateTime endDate) {
-//        try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
-//            entityManager.getTransaction().begin();
-//            Rent rent = entityManager.find(Rent.class, id);
-//            if (rent != null) {
-//                rent.setEndTime(endDate);
-//                entityManager.getTransaction().commit();
-//                return rent;
-//            }
-//            entityManager.getTransaction().rollback();
-//            return null;
-//        }
-//    }
-
 
     @Override
     public void create(Rent rent) {
@@ -77,14 +63,13 @@ public class RentRepository implements Repository<Rent> {
         }
     }
 
-//    @Override
+    @Override
     public List<Rent> getAll() {
         try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Rent> query = criteriaBuilder.createQuery(Rent.class);
             Root<Rent> root = query.from(Rent.class);
             query.select(root);
-
 
             return entityManager.createQuery(query).getResultList();
         }

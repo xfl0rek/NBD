@@ -4,6 +4,8 @@ import jakarta.persistence.Access;
 import jakarta.persistence.AccessType;
 import jakarta.persistence.Embeddable;
 
+import java.util.Objects;
+
 
 @Embeddable
 @Access(AccessType.FIELD)
@@ -43,5 +45,18 @@ public class Address {
 
     public void setNumber(String number) {
         this.number = number;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Address address = (Address) o;
+        return Objects.equals(street, address.street) && Objects.equals(city, address.city) && Objects.equals(number, address.number);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(street, city, number);
     }
 }

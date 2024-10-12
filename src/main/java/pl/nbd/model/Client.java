@@ -2,6 +2,8 @@ package pl.nbd.model;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "client_type")
@@ -67,4 +69,17 @@ public abstract class Client {
     }
 
     abstract double applyDiscount(double price);
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Client client = (Client) o;
+        return personalID == client.personalID && isArchive == client.isArchive && Objects.equals(firstName, client.firstName) && Objects.equals(lastName, client.lastName) && Objects.equals(address, client.address);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(personalID, firstName, lastName, isArchive, address);
+    }
 }

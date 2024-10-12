@@ -72,21 +72,22 @@ public class Main {
 
 
         //Wynajem
-        room9 = roomRepository.lockRoom(9);
-        rentManager.rentRoom(client, room9, LocalDateTime.now());
-        System.out.println("123");
-        Rent rent = rentManager.getRent(1);
-        rentManager.rentRoom(client1, room9, LocalDateTime.now());
-        Rent rent1 = rentManager.getRent(2);
-        if (rent1 == null) {
-            System.out.println("Nie można wynająć pokoju.");
-        }
-        LocalDateTime endTime = LocalDateTime.now().plus(Duration.ofHours(168));
-        rentManager.returnRoom(1, endTime);
-
-
-        Rent readRent = rentManager.getRent(1);
-        System.out.println("Odczytano wynajem o ID: " + readRent.getId() + ", liczba dni: " + readRent.getRentDays() + ", koszt wynajmu: " + readRent.getRentCost());
+        //room9 = roomRepository.lockRoom(9);
+//        Client client2 = clientManager.registerClient(78654123, "Leo", "Messi", address, "default");
+//        rentManager.rentRoom(client2, room9, LocalDateTime.now());
+//        System.out.println("123");
+//        Rent rent = rentManager.getRent(1);
+//        rentManager.rentRoom(client, room9, LocalDateTime.now());
+//        Rent rent1 = rentManager.getRent(20);
+//        if (rent1 == null) {
+//            System.out.println("Nie można wynająć pokoju.");
+//        }
+//        LocalDateTime endTime = LocalDateTime.now().plus(Duration.ofHours(168));
+//        rentManager.returnRoom(1, endTime);
+//
+//
+//        Rent readRent = rentManager.getRent(1);
+//        System.out.println("Odczytano wynajem o ID: " + readRent.getId() + ", liczba dni: " + readRent.getRentDays() + ", koszt wynajmu: " + readRent.getRentCost());
 //
 //        rent.setRentCost(1500);
 //        rentRepository.update(rent);

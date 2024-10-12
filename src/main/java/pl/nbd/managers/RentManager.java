@@ -6,7 +6,6 @@ import pl.nbd.model.Room;
 import pl.nbd.repository.RentRepository;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class RentManager {
@@ -16,17 +15,15 @@ public class RentManager {
         this.rentRepository = rentRepository;
     }
 
-    public void rentRoom(Client client, Room room, LocalDateTime startDate) {
+    public void rentRoom(long id, Client client, Room room, LocalDateTime startDate) throws Exception {
         List<Rent> rents = rentRepository.getAll();
         for (Rent rent : rents) {
-            if (rent.getRoom().equals(room) && rent.getEndTime() == null) {
-//                throw new IllegalArgumentException("Room is already rented");
-                System.out.println("Room is already rented");
-                return;
+            if (rent.getRoom().getRoomNumber() == room.getRoomNumber() && rent.getEndTime() == null) {
+                throw new Exception("Nie ma.");
             }
         }
 
-        rentRepository.createReservation(client, room, startDate);
+        rentRepository.createReservation(id, client, room, startDate);
     }
 
     public void returnRoom(long reservationID, LocalDateTime endDate) {

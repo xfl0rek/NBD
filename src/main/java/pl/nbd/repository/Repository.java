@@ -7,5 +7,5 @@ public interface Repository<T> {
     T read(long id);
     void update(T t);
     void delete(T t);
-//    List<T> getAll();
+    List<T> getAll();
 }

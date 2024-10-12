@@ -3,6 +3,8 @@ package pl.nbd.model;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "room_type")
@@ -44,5 +46,18 @@ public abstract class Room {
 
     public void setRoomCapacity(int roomCapacity) {
         this.roomCapacity = roomCapacity;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Room room = (Room) o;
+        return basePrice == room.basePrice && roomNumber == room.roomNumber && roomCapacity == room.roomCapacity;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(basePrice, roomNumber, roomCapacity);
     }
 }
