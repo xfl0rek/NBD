@@ -1,5 +1,7 @@
 package pl.nbd.managers;
 
+import jakarta.persistence.*;
+import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -36,16 +38,17 @@ class RentManagerTest {
         Client client1 = clientManager.registerClient(123456789, "Cristiano", "Ronaldo", address1, "premium");
         roomManager.registerRoom(1000, 10, 2, 3);
         RoomChildren room = new RoomChildren(1000, 10, 2, 3);
-        //Room room = roomManager.getRoom(10);
+
         LocalDateTime date = LocalDateTime.now();
-        //LocalDateTime endDate = LocalDateTime.now().plusDays(1);
+
 
         try {
             rentManager.rentRoom(1, client1, room, date);
-            //rentManager.returnRoom(1, endDate);
+
             Rent rent = rentManager.getRent(1);
             Rent rent1 = new Rent(1, client1, room, date);
-            //rent1.endRent(endDate);
+
+
             Assertions.assertEquals(rent, rent1);
         }
         catch (Exception e) {}
@@ -82,14 +85,9 @@ class RentManagerTest {
             rentManager.rentRoom(1, client1, room, LocalDateTime.now());
             assertThrows(Exception.class, () -> {
                 rentManager.rentRoom(2, client2, room, LocalDateTime.now());});
-        }
-        catch (Exception e) {}
+        } catch (Exception e) {}
 
 
-
-//        (JdbcWriteException.class, () -> {
-//            file2.write(sudokuBoard);
-//        });
     }
 
     @Test
@@ -104,5 +102,47 @@ class RentManagerTest {
 
             assertEquals(rentManager.getRent(1), expectedRent);
         } catch (Exception e) {}
+    }
+
+   //Test nie dziala, zawiesza sie w 132 linii, przyczyna - powstaje 2 entity maneger w rentRepository i nie jest rzucany wyjatek tylko mieli
+    @Test
+    void concurrentRentTest() {
+        Address address1 = new Address("Real", "Madryt", "7");
+        Address address2 = new Address("FC", "Barcelona", "10");
+        Client client1 = new PremiumClient(123456789, "Cristiano", "Ronaldo", address1);
+        Client client2 = new DefaultClient(987654321, "Leo", "Messi", address2);
+
+        long roomId = 10;
+
+        try (EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
+            EntityManager entityManager = entityManagerFactory.createEntityManager()
+        ) {
+            clientManager.registerClient(123456789, "Cristiano", "Ronaldo", address1, "premium");
+            clientManager.registerClient(987654321, "Leo", "Messi", address2, "default");
+            roomManager.registerRoom(1000, 10, 2, 3);
+
+
+            entityManager.getTransaction().begin();
+
+            entityManager.persist(client1);
+
+            Room room = entityManager.find(Room.class, roomId, LockModeType.PESSIMISTIC_WRITE);
+            System.out.println(room.getRoomNumber());
+
+            assertThrows(PessimisticLockException.class, () -> {
+                rentManager.rentRoom(2, client2, room, LocalDateTime.now());
+            });
+
+            Rent rent = new Rent(1, client1, room, LocalDateTime.now());
+            entityManager.persist(rent);
+            entityManager.getTransaction().commit();
+
+
+        }
+        Room room = roomManager.getRoom(10);
+        Rent rent = new Rent(1, client1, room, LocalDateTime.now());
+        Rent rent2 = rentManager.getRent(1);
+        System.out.println(rent2.getId());
+        assertEquals(rent, rent2);
     }
 }
