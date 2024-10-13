@@ -1,11 +1,16 @@
 package pl.nbd.managers;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 import org.checkerframework.checker.nullness.qual.AssertNonNullIfNonNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.nbd.model.Address;
 import pl.nbd.model.Client;
+import pl.nbd.model.DefaultClient;
+import pl.nbd.model.PremiumClient;
 import pl.nbd.repository.ClientRepository;
 import org.junit.jupiter.api.BeforeAll;
 
@@ -20,7 +25,9 @@ class ClientManagerTest {
 
     @BeforeAll
     public static void setUp() {
-        clientRepository = new ClientRepository();
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        clientRepository = new ClientRepository(entityManager);
         clientManager = new ClientManager(clientRepository);
     }
 
@@ -28,8 +35,11 @@ class ClientManagerTest {
     void registerClient() {
         Address address1 = new Address("Real", "Madryt", "7");
         Address address2 = new Address("FC", "Barcelona", "10");
-        Client client1 = clientManager.registerClient(123456789, "Cristiano", "Ronaldo", address1, "premium");
-        Client client2 = clientManager.registerClient(987654321, "Leo", "Messi", address2, "default");
+        Client client1 = new PremiumClient(123456789, "Cristiano", "Ronaldo", address1);
+        Client client2 = new DefaultClient(987654321, "Leo", "Messi", address2);
+
+        clientManager.registerClient(123456789, "Cristiano", "Ronaldo", address1, "premium");
+        clientManager.registerClient(987654321, "Leo", "Messi", address2, "default");
 
         Client readClient1 = clientManager.getClient(123456789);
         Client readClient2 = clientManager.getClient(987654321);
@@ -43,7 +53,7 @@ class ClientManagerTest {
     @Test
     void deleteClient() {
         Address address1 = new Address("Real", "Madryt", "7");
-        Client client1 = clientManager.registerClient(123456789, "Cristiano", "Ronaldo", address1, "premium");
+        clientManager.registerClient(123456789, "Cristiano", "Ronaldo", address1, "premium");
         Client readClient1 = clientManager.getClient(123456789);
         Assertions.assertNotNull(readClient1);
         clientManager.deleteClient(123456789);
@@ -54,7 +64,7 @@ class ClientManagerTest {
     @Test
     void updateClientInformation() {
         Address address1 = new Address("Real", "Madryt", "7");
-        Client client1 = clientManager.registerClient(123456789, "Cristiano", "Ronaldo", address1, "premium");
+        clientManager.registerClient(123456789, "Cristiano", "Ronaldo", address1, "premium");
         clientManager.updateClientInformation(123456789, "Crist", "Ronaldo", address1, "premium");
         Client client2 = clientManager.getClient(123456789);
         Assertions.assertEquals(client2.getFirstName(), "Crist");
@@ -63,9 +73,9 @@ class ClientManagerTest {
     @Test
     void unregisterClient() {
         Address address1 = new Address("Real", "Madryt", "7");
-        Client client1 = clientManager.registerClient(123456789, "Cristiano", "Ronaldo", address1, "premium");
-        clientManager.deleteClient(123456789);
+        clientManager.registerClient(123456789, "Cristiano", "Ronaldo", address1, "premium");
+        clientManager.unregisterClient(clientManager.getClient(123456789));
         Client readClient1 = clientManager.getClient(123456789);
-        Assertions.assertNull(readClient1);
+        Assertions.assertTrue(readClient1.isArchive());
     }
 }

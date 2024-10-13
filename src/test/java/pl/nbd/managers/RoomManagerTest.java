@@ -1,11 +1,15 @@
 package pl.nbd.managers;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import pl.nbd.model.Room;
 import pl.nbd.model.RoomChildren;
 import pl.nbd.model.RoomRegular;
 import pl.nbd.repository.RoomRepository;
+
+import javax.swing.text.html.parser.Entity;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,40 +19,45 @@ class RoomManagerTest {
 
     @BeforeAll
     public static void setUp() {
-        roomRepository = new RoomRepository();
+        EntityManagerFactory entityManagerFactory = jakarta.persistence.Persistence.createEntityManagerFactory("default");
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        roomRepository = new RoomRepository(entityManager);
         roomManager = new RoomManager(roomRepository);
     }
 
     @Test
     void registerRoom() {
-        roomManager.registerRoom(1000, 10, 2, 3);
+        roomManager.registerRoom(10, 1000, 2, 3);
         Room expectedRoom = roomManager.getRoom(10);
-        RoomChildren room = new RoomChildren(1000, 10, 2, 3);
+        RoomChildren room = new RoomChildren(10, 1000, 2, 3);
         assertEquals(expectedRoom, room);
 
-        roomManager.registerRoom(1000, 80, 2, true);
+        roomManager.registerRoom(80, 1000, 2, true);
         Room expectedRoom2 = roomManager.getRoom(80);
-        RoomRegular roomRegular = new RoomRegular(1000, 80, 2, true);
+        RoomRegular roomRegular = new RoomRegular(80, 1000, 2, true);
         assertEquals(expectedRoom2, roomRegular);
     }
 
     @Test
     void deleteRoom() {
-        roomManager.registerRoom(1000, 10, 2, 3);
+        roomManager.registerRoom(10, 1000, 2, 3);
         roomManager.deleteRoom(10);
         assertNull(roomManager.getRoom(10));
     }
 
     @Test
     void updateRoomInformation() {
-        roomManager.registerRoom(1000, 10, 2, 3);
-        Room expectedRoom = roomManager.getRoom(10);
+        roomManager.registerRoom(10, 1000, 2, 3);
+//        Room expectedRoom = roomManager.getRoom(10);
         roomManager.updateRoomInformation(10, 9999, 3, 3);
-        assertNotEquals(roomManager.getRoom(10), expectedRoom);
+        Room expectedRoom = roomManager.getRoom(10);
+        assertEquals(expectedRoom.getBasePrice(), 9999);
 
-        roomManager.registerRoom(1000, 15, 2, true);
-        Room expectedRoom2 = roomManager.getRoom(15);
+        roomManager.registerRoom(15, 1000, 2, true);
+
         roomManager.updateRoomInformation(15, 9999, 2, false);
-        assertNotEquals(roomManager.getRoom(15), expectedRoom2);
+        Room readRoom =  roomManager.getRoom(15);
+        RoomRegular expectedRoom2 = (RoomRegular) readRoom;
+        assertEquals(expectedRoom2.isBreakfastIncluded(), false);
     }
 }

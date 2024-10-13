@@ -17,9 +17,9 @@ public abstract class Room {
     @Column(name = "room_capacity")
     private int roomCapacity;
 
-    public Room(int basePrice, int roomNumber, int roomCapacity) {
-        this.basePrice = basePrice;
+    public Room( int roomNumber, int basePrice, int roomCapacity) {
         this.roomNumber = roomNumber;
+        this.basePrice = basePrice;
         this.roomCapacity = roomCapacity;
     }
 

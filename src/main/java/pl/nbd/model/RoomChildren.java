@@ -6,8 +6,8 @@ import jakarta.persistence.Entity;
 public class RoomChildren extends Room {
     private int numberOfChildren;
 
-    public RoomChildren(int basePrice, int roomNumber, int roomCapacity, int numberOfChildren) {
-        super(basePrice, roomNumber, roomCapacity);
+    public RoomChildren(int roomNumber, int basePrice,  int roomCapacity, int numberOfChildren) {
+        super(roomNumber, basePrice, roomCapacity);
         this.numberOfChildren = numberOfChildren;
     }
 

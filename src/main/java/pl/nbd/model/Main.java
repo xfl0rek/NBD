@@ -15,57 +15,57 @@ import java.util.Random;
 
 public class Main {
     public static void main(String[] args) {
-        ClientRepository clientRepository  = new ClientRepository();
-        RoomRepository roomRepository = new RoomRepository();
-        RentRepository rentRepository = new RentRepository();
-        ClientManager clientManager = new ClientManager(clientRepository);
-        RoomManager roomManager = new RoomManager(roomRepository);
-        RentManager rentManager = new RentManager(rentRepository);
-
-        //Rejestracja klientow
-        Address address = new Address("Real", "Madryt", "9");
-        Random random = new Random();
-        Client client = clientManager.registerClient(123456789, "Cristiano", "Ronaldo", address, "premium");
-        Client client1 = clientManager.registerClient(987654321, "Leo", "Messi", address, "default");
-
-        System.out.println("Zarejestrowano klientów:");
-        System.out.println(client.getFirstName() + " " + client.getLastName());
-        System.out.println(client1.getFirstName() + " " + client1.getLastName());
-
-        System.out.println(clientManager.getClient(123456789));
-
-        clientManager.deleteClient(987654321);
-        if (clientManager.getClient(987654321) == null) {
-            System.out.println("Usunieto klienta.");
-        }
-
-        clientManager.updateClientInformation(123456789, "Vinicius", "Junior", address, "default");
-        System.out.println("Zaktualizowano info o kliencie: " + client.getFirstName() + " " + client.getLastName());
-
-        clientManager.unregisterClient(client);
-        System.out.println("Zarchiwizowano klienta: " + client.isArchive());
-
-        //Rejestracja pokoi
-        roomManager.registerRoom(1000, 9, 2, true);
-        roomManager.registerRoom(1000, 10, 2, 3);
-
-
-
-
-
-        Room room9 = roomManager.getRoom(9);
-        Room room10 = roomManager.getRoom(10);
-        System.out.println("Odczytano pokój: " + room9.getRoomNumber() +", pojemność: " + room9.getRoomCapacity());
-
-        roomManager.updateRoomInformation(9, 1500, 3, true);
-        Room updatedRoom = roomManager.getRoom(9);
-        System.out.println("Zaktualizowano pokój o numerze " + updatedRoom.getRoomNumber() + " z pojemnością " + updatedRoom.getRoomCapacity());
-
-        roomManager.deleteRoom(10);
-        Room deletedRoom = roomManager.getRoom(10);
-        if (deletedRoom == null) {
-            System.out.println("Pokój o numerze 10" + " został usunięty.");
-        }
+//        ClientRepository clientRepository  = new ClientRepository();
+//        RoomRepository roomRepository = new RoomRepository();
+//        RentRepository rentRepository = new RentRepository();
+//        ClientManager clientManager = new ClientManager(clientRepository);
+//        RoomManager roomManager = new RoomManager(roomRepository);
+//        RentManager rentManager = new RentManager(rentRepository);
+//
+//        //Rejestracja klientow
+//        Address address = new Address("Real", "Madryt", "9");
+//        Random random = new Random();
+//        Client client = clientManager.registerClient(123456789, "Cristiano", "Ronaldo", address, "premium");
+//        Client client1 = clientManager.registerClient(987654321, "Leo", "Messi", address, "default");
+//
+//        System.out.println("Zarejestrowano klientów:");
+//        System.out.println(client.getFirstName() + " " + client.getLastName());
+//        System.out.println(client1.getFirstName() + " " + client1.getLastName());
+//
+//        System.out.println(clientManager.getClient(123456789));
+//
+//        clientManager.deleteClient(987654321);
+//        if (clientManager.getClient(987654321) == null) {
+//            System.out.println("Usunieto klienta.");
+//        }
+//
+//        clientManager.updateClientInformation(123456789, "Vinicius", "Junior", address, "default");
+//        System.out.println("Zaktualizowano info o kliencie: " + client.getFirstName() + " " + client.getLastName());
+//
+//        clientManager.unregisterClient(client);
+//        System.out.println("Zarchiwizowano klienta: " + client.isArchive());
+//
+//        //Rejestracja pokoi
+//        roomManager.registerRoom(1000, 9, 2, true);
+//        roomManager.registerRoom(1000, 10, 2, 3);
+//
+//
+//
+//
+//
+//        Room room9 = roomManager.getRoom(9);
+//        Room room10 = roomManager.getRoom(10);
+//        System.out.println("Odczytano pokój: " + room9.getRoomNumber() +", pojemność: " + room9.getRoomCapacity());
+//
+//        roomManager.updateRoomInformation(9, 1500, 3, true);
+//        Room updatedRoom = roomManager.getRoom(9);
+//        System.out.println("Zaktualizowano pokój o numerze " + updatedRoom.getRoomNumber() + " z pojemnością " + updatedRoom.getRoomCapacity());
+//
+//        roomManager.deleteRoom(10);
+//        Room deletedRoom = roomManager.getRoom(10);
+//        if (deletedRoom == null) {
+//            System.out.println("Pokój o numerze 10" + " został usunięty.");
+//        }
 
 
 

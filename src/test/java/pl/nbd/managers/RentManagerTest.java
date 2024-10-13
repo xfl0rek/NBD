@@ -24,24 +24,26 @@ class RentManagerTest {
 
     @BeforeAll
     public static void setUp() {
-        rentRepository = new RentRepository();
+        EntityManagerFactory entityManagerFactory = jakarta.persistence.Persistence.createEntityManagerFactory("default");
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        rentRepository = new RentRepository(entityManager);
         rentManager = new RentManager(rentRepository);
-        clientRepository = new ClientRepository();
+        clientRepository = new ClientRepository(entityManager);
         clientManager = new ClientManager(clientRepository);
-        roomRepository = new RoomRepository();
+        roomRepository = new RoomRepository(entityManager);
         roomManager = new RoomManager(roomRepository);
     }
 
     @Test
     void rentRoom() {
         Address address1 = new Address("Real", "Madryt", "7");
-        Client client1 = clientManager.registerClient(123456789, "Cristiano", "Ronaldo", address1, "premium");
+        clientManager.registerClient(123456789, "Cristiano", "Ronaldo", address1, "premium");
         roomManager.registerRoom(1000, 10, 2, 3);
         RoomChildren room = new RoomChildren(1000, 10, 2, 3);
 
         LocalDateTime date = LocalDateTime.now();
 
-
+        Client client1 = clientManager.getClient(123456789);
         try {
             rentManager.rentRoom(1, client1, room, date);
 
@@ -57,9 +59,10 @@ class RentManagerTest {
     @Test
     void returnRoom() {
         Address address1 = new Address("Real", "Madryt", "7");
-        Client client1 = clientManager.registerClient(123456789, "Cristiano", "Ronaldo", address1, "premium");
+        clientManager.registerClient(123456789, "Cristiano", "Ronaldo", address1, "premium");
         roomManager.registerRoom(1000, 10, 2, 3);
         RoomChildren room = new RoomChildren(1000, 10, 2, 3);
+        Client client1 = clientManager.getClient(123456789);
         try {
             rentManager.rentRoom(1, client1, room, LocalDateTime.now());
             Rent rent = rentManager.getRent(1);
@@ -78,9 +81,11 @@ class RentManagerTest {
     void rentOccupiedRoom() {
         Address address1 = new Address("Real", "Madryt", "7");
         Address address2 = new Address("FC", "Barcelona", "10");
-        Client client1 = clientManager.registerClient(123456789, "Cristiano", "Ronaldo", address1, "premium");
-        Client client2 = clientManager.registerClient(987654321, "Leo", "Messi", address2, "default");
+        clientManager.registerClient(123456789, "Cristiano", "Ronaldo", address1, "premium");
+        clientManager.registerClient(987654321, "Leo", "Messi", address2, "default");
         RoomChildren room = new RoomChildren(1000, 10, 2, 3);
+        Client client1 = clientManager.getClient(123456789);
+        Client client2 = clientManager.getClient(987654321);
         try {
             rentManager.rentRoom(1, client1, room, LocalDateTime.now());
             assertThrows(Exception.class, () -> {
@@ -93,9 +98,10 @@ class RentManagerTest {
     @Test
     void getRent() {
         Address address1 = new Address("Real", "Madryt", "7");
-        Client client1 = clientManager.registerClient(123456789, "Cristiano", "Ronaldo", address1, "premium");
+        clientManager.registerClient(123456789, "Cristiano", "Ronaldo", address1, "premium");
         //RoomChildren room = new RoomChildren(1000, 10, 2, 3);
         roomManager.registerRoom(1000, 10, 2, 3);
+        Client client1 = clientManager.getClient(123456789);
         try {
             rentManager.rentRoom(1, client1, roomManager.getRoom(10), LocalDateTime.now());
             Rent expectedRent = new Rent(1, client1, roomManager.getRoom(10), LocalDateTime.now());

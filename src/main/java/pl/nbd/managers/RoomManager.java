@@ -11,16 +11,16 @@ public class RoomManager {
     public RoomManager(RoomRepository roomRepository) {
         this.roomRepository = roomRepository;
     }
-    public void registerRoom(int basePrice, int roomNumber, int roomCapacity, int numberOfChildren) {
+    public void registerRoom(int roomNumber, int basePrice, int roomCapacity, int numberOfChildren) {
         if (roomRepository.read(roomNumber) == null) {
-            Room room = new RoomChildren(basePrice, roomNumber, roomCapacity, numberOfChildren);
+            Room room = new RoomChildren(roomNumber, basePrice, roomCapacity, numberOfChildren);
             roomRepository.create(room);
         }
     }
 
-    public void registerRoom(int basePrice, int roomNumber, int roomCapacity, boolean isBreakfastIncluded) {
+    public void registerRoom(int roomNumber, int basePrice, int roomCapacity, boolean isBreakfastIncluded) {
         if (roomRepository.read(roomNumber) == null) {
-            Room room = new RoomRegular(basePrice, roomNumber, roomCapacity, isBreakfastIncluded);
+            Room room = new RoomRegular(roomNumber, basePrice, roomCapacity, isBreakfastIncluded);
             roomRepository.create(room);
         }
     }

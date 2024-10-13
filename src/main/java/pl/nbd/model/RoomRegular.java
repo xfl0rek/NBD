@@ -10,8 +10,8 @@ public class RoomRegular extends Room {
     public RoomRegular() {
     }
 
-    public RoomRegular(int basePrice, int roomNumber, int roomCapacity, boolean isBreakfastIncluded) {
-        super(basePrice, roomNumber, roomCapacity);
+    public RoomRegular(int roomNumber, int basePrice, int roomCapacity, boolean isBreakfastIncluded) {
+        super(roomNumber, basePrice, roomCapacity);
         this.isBreakfastIncluded = isBreakfastIncluded;
     }
 
@@ -23,4 +23,6 @@ public class RoomRegular extends Room {
     public void setBreakfastIncluded(boolean breakfastIncluded) {
         isBreakfastIncluded = breakfastIncluded;
     }
+
+
 }

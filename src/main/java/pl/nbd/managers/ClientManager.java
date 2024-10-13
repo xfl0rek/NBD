@@ -13,23 +13,20 @@ public class ClientManager {
         this.clientRepository = clientRepository;
     }
 
-    public Client registerClient(long personalID, String firstName, String lastName, Address address, String type) {
+    public void registerClient(long personalID, String firstName, String lastName, Address address, String type) {
         if (clientRepository.read(personalID) == null) {
             if (type.equals("default")) {
                 Client newClient = new DefaultClient(personalID, firstName, lastName, address);
                 clientRepository.create(newClient);
-                return newClient;
             } else if (type.equals("premium")) {
                 Client newClient = new PremiumClient(personalID, firstName, lastName, address);
                 clientRepository.create(newClient);
-                return newClient;
             }
         }
         Client existingClient = clientRepository.read(personalID);
         existingClient.setFirstName(firstName);
         existingClient.setLastName(lastName);
         existingClient.setAddress(address);
-        return existingClient;
     }
 
     public Client getClient(long personalID) {
