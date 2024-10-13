@@ -9,8 +9,6 @@ import pl.nbd.model.RoomChildren;
 import pl.nbd.model.RoomRegular;
 import pl.nbd.repository.RoomRepository;
 
-import javax.swing.text.html.parser.Entity;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class RoomManagerTest {

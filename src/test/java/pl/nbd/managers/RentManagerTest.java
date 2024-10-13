@@ -1,7 +1,6 @@
 package pl.nbd.managers;
 
 import jakarta.persistence.*;
-import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -38,8 +37,8 @@ class RentManagerTest {
     void rentRoom() {
         Address address1 = new Address("Real", "Madryt", "7");
         clientManager.registerClient(123456789, "Cristiano", "Ronaldo", address1, "premium");
-        roomManager.registerRoom(1000, 10, 2, 3);
-        RoomChildren room = new RoomChildren(1000, 10, 2, 3);
+        roomManager.registerRoom(10, 1000, 2, 3);
+        RoomChildren room = new RoomChildren(10, 1000, 2, 3);
 
         LocalDateTime date = LocalDateTime.now();
 
@@ -60,8 +59,8 @@ class RentManagerTest {
     void returnRoom() {
         Address address1 = new Address("Real", "Madryt", "7");
         clientManager.registerClient(123456789, "Cristiano", "Ronaldo", address1, "premium");
-        roomManager.registerRoom(1000, 10, 2, 3);
-        RoomChildren room = new RoomChildren(1000, 10, 2, 3);
+        roomManager.registerRoom(10, 1000, 2, 3);
+        RoomChildren room = new RoomChildren(10, 1000, 2, 3);
         Client client1 = clientManager.getClient(123456789);
         try {
             rentManager.rentRoom(1, client1, room, LocalDateTime.now());
@@ -83,7 +82,7 @@ class RentManagerTest {
         Address address2 = new Address("FC", "Barcelona", "10");
         clientManager.registerClient(123456789, "Cristiano", "Ronaldo", address1, "premium");
         clientManager.registerClient(987654321, "Leo", "Messi", address2, "default");
-        RoomChildren room = new RoomChildren(1000, 10, 2, 3);
+        RoomChildren room = new RoomChildren(10, 1000, 2, 3);
         Client client1 = clientManager.getClient(123456789);
         Client client2 = clientManager.getClient(987654321);
         try {
@@ -100,7 +99,7 @@ class RentManagerTest {
         Address address1 = new Address("Real", "Madryt", "7");
         clientManager.registerClient(123456789, "Cristiano", "Ronaldo", address1, "premium");
         //RoomChildren room = new RoomChildren(1000, 10, 2, 3);
-        roomManager.registerRoom(1000, 10, 2, 3);
+        roomManager.registerRoom(10, 1000, 2, 3);
         Client client1 = clientManager.getClient(123456789);
         try {
             rentManager.rentRoom(1, client1, roomManager.getRoom(10), LocalDateTime.now());
@@ -125,7 +124,7 @@ class RentManagerTest {
         ) {
             clientManager.registerClient(123456789, "Cristiano", "Ronaldo", address1, "premium");
             clientManager.registerClient(987654321, "Leo", "Messi", address2, "default");
-            roomManager.registerRoom(1000, 10, 2, 3);
+            roomManager.registerRoom(10, 1000, 2, 3);
 
 
             entityManager.getTransaction().begin();

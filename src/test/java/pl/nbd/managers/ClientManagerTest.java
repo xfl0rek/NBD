@@ -3,9 +3,7 @@ package pl.nbd.managers;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
-import org.checkerframework.checker.nullness.qual.AssertNonNullIfNonNull;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.nbd.model.Address;
 import pl.nbd.model.Client;
@@ -13,8 +11,6 @@ import pl.nbd.model.DefaultClient;
 import pl.nbd.model.PremiumClient;
 import pl.nbd.repository.ClientRepository;
 import org.junit.jupiter.api.BeforeAll;
-
-import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
