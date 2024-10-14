@@ -23,7 +23,12 @@ public class RentManager {
             }
         }
 
-        rentRepository.createReservation(id, client, room, startDate);
+        try {
+            rentRepository.createReservation(id, client, room, startDate);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+//        rentRepository.createReservation(id, client, room, startDate);
     }
 
     public void returnRoom(long reservationID, LocalDateTime endDate) {

@@ -9,7 +9,9 @@ import pl.nbd.model.Rent;
 import pl.nbd.model.Room;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RentRepository implements Repository<Rent> {
     private EntityManager entityManager;
@@ -20,12 +22,20 @@ public class RentRepository implements Repository<Rent> {
 
 
     public void createReservation(long id, Client client, Room room, LocalDateTime startDate) {
-        entityManager.getTransaction().begin();
-        Room managedRoom = entityManager.find(Room.class, room.getRoomNumber());
-        entityManager.lock(managedRoom, LockModeType.PESSIMISTIC_WRITE);
-        Rent rent = new Rent(id, client, managedRoom, startDate);
-        entityManager.persist(rent);
-        entityManager.getTransaction().commit();
+        try {
+            Map<String, Object> properties = new HashMap<>();
+            properties.put("javax.persistence.lock.timeout", 0);
+            entityManager.getTransaction().begin();
+            Room managedRoom = entityManager.find(Room.class, room.getRoomNumber(), LockModeType.PESSIMISTIC_WRITE, properties);
+//        entityManager.lock(managedRoom, LockModeType.PESSIMISTIC_WRITE);
+            Rent rent = new Rent(id, client, managedRoom, startDate);
+            entityManager.persist(rent);
+            entityManager.getTransaction().commit();
+        }
+        catch (Exception e) {
+            entityManager.getTransaction().rollback();
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

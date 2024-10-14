@@ -24,6 +24,7 @@
       <property name="jakarta.persistence.jdbc.password" value="nbdpassword"/>
       <property name="hibernate.hbm2ddl.auto" value="update"/>
       <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/>
+      <property name="javax.persistence.lock.timeout" value="0"/>
 
     </properties>
   </persistence-unit>
