@@ -19,12 +19,12 @@ public class RentManager {
         List<Rent> rents = rentRepository.getAll();
         for (Rent rent : rents) {
             if (rent.getRoom().getRoomNumber() == room.getRoomNumber() && rent.getEndTime() == null) {
-                throw new Exception("Nie ma.");
+                throw new Exception("Pokoj jest juz zajety");
             }
         }
         try {
             rentRepository.createReservation(id, client, room, startDate);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
     }

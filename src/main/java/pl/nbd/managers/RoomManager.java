@@ -54,10 +54,4 @@ public class RoomManager {
 
         }
     }
-
-
-
-//    public List<Room> getAvailableRooms() {
-//        return roomRepository.getAll();
-//    }
 }

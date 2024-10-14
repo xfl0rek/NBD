@@ -5,7 +5,6 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 import pl.nbd.model.Room;
-
 import java.util.List;
 
 public class RoomRepository implements Repository<Room> {

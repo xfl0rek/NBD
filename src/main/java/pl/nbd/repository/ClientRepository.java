@@ -1,20 +1,13 @@
 package pl.nbd.repository;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
-import org.hibernate.Criteria;
 import pl.nbd.model.Client;
-import pl.nbd.model.Rent;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class ClientRepository implements Repository<Client> {
-    //EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
     private EntityManager entityManager;
 
     public ClientRepository(EntityManager entityManager) {

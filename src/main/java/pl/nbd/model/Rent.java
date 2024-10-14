@@ -109,18 +109,7 @@ public class Rent {
         return Math.round(100 * client.applyDiscount(getRentDays() * room.getBasePrice())) / 100.0;
     }
 
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//        Rent rent = (Rent) o;
-//        return id == rent.id && Double.compare(rentCost, rent.rentCost) == 0 && isArchive == rent.isArchive && Objects.equals(client, rent.client) && Objects.equals(room, rent.room) && Objects.equals(beginTime, rent.beginTime) && Objects.equals(endTime, rent.endTime);
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash(id, client, room, beginTime, endTime, rentCost, isArchive);
-//    }
+
 @Override
 public boolean equals(Object o) {
     if (this == o) return true;

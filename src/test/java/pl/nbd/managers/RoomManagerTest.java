@@ -46,7 +46,6 @@ class RoomManagerTest {
     @Test
     void updateRoomInformation() {
         roomManager.registerRoom(10, 1000, 2, 3);
-//        Room expectedRoom = roomManager.getRoom(10);
         roomManager.updateRoomInformation(10, 9999, 3, 3);
         Room expectedRoom = roomManager.getRoom(10);
         assertEquals(expectedRoom.getBasePrice(), 9999);

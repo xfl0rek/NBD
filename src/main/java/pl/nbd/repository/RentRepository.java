@@ -7,7 +7,6 @@ import jakarta.persistence.criteria.Root;
 import pl.nbd.model.Client;
 import pl.nbd.model.Rent;
 import pl.nbd.model.Room;
-
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +30,7 @@ public class RentRepository implements Repository<Rent> {
             entityManager.persist(rent);
             entityManager.getTransaction().commit();
         }
-        catch (Exception e) {
+        catch (PessimisticLockException | LockTimeoutException e) {
             entityManager.getTransaction().rollback();
             throw new RuntimeException(e);
         }

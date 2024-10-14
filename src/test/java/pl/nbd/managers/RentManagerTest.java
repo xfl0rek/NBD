@@ -104,7 +104,6 @@ class RentManagerTest {
     void getRent() {
         Address address1 = new Address("Real", "Madryt", "7");
         clientManager.registerClient(123456789, "Cristiano", "Ronaldo", address1, "premium");
-        //RoomChildren room = new RoomChildren(1000, 10, 2, 3);
         roomManager.registerRoom(13, 1000, 2, 3);
         Client client1 = clientManager.getClient(123456789);
         try {
@@ -116,7 +115,6 @@ class RentManagerTest {
     }
 
     @Test
-    @Order(1)
     void concurrentRentTest() {
         Address address1 = new Address("Real", "Madryt", "7");
         Address address2 = new Address("FC", "Barcelona", "10");
