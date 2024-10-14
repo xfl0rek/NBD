@@ -22,13 +22,11 @@ public class RentManager {
                 throw new Exception("Nie ma.");
             }
         }
-
         try {
             rentRepository.createReservation(id, client, room, startDate);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-//        rentRepository.createReservation(id, client, room, startDate);
     }
 
     public void returnRoom(long reservationID, LocalDateTime endDate) {

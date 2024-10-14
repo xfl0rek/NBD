@@ -27,7 +27,6 @@ public class RentRepository implements Repository<Rent> {
             properties.put("javax.persistence.lock.timeout", 0);
             entityManager.getTransaction().begin();
             Room managedRoom = entityManager.find(Room.class, room.getRoomNumber(), LockModeType.PESSIMISTIC_WRITE, properties);
-//        entityManager.lock(managedRoom, LockModeType.PESSIMISTIC_WRITE);
             Rent rent = new Rent(id, client, managedRoom, startDate);
             entityManager.persist(rent);
             entityManager.getTransaction().commit();

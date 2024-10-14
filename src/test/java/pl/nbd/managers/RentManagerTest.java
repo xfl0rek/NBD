@@ -1,13 +1,10 @@
 package pl.nbd.managers;
 
 import jakarta.persistence.*;
-import jakarta.transaction.Transaction;
-import org.hibernate.dialect.lock.PessimisticEntityLockException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.w3c.dom.Entity;
 import pl.nbd.model.*;
 import pl.nbd.repository.ClientRepository;
 import pl.nbd.repository.RentRepository;
@@ -45,12 +42,10 @@ class RentManagerTest {
 
     @Test
     void rentRoom() {
-        System.out.println("rentRoom");
         Address address1 = new Address("Real", "Madryt", "7");
         clientManager.registerClient(123456789, "Cristiano", "Ronaldo", address1, "premium");
         roomManager.registerRoom(10, 1000, 2, 3);
         RoomChildren room = new RoomChildren(10, 1000, 2, 3);
-
         LocalDateTime date = LocalDateTime.now();
 
         Client client1 = clientManager.getClient(123456789);
@@ -68,7 +63,6 @@ class RentManagerTest {
 
     @Test
     void returnRoom() {
-        System.out.println("returnRoom");
         Address address1 = new Address("Real", "Madryt", "7");
         clientManager.registerClient(123456789, "Cristiano", "Ronaldo", address1, "premium");
         roomManager.registerRoom(11, 1000, 2, 3);
@@ -90,7 +84,6 @@ class RentManagerTest {
 
     @Test
     void rentOccupiedRoom() {
-        System.out.println("rentOccupiedRoom");
         Address address1 = new Address("Real", "Madryt", "7");
         Address address2 = new Address("FC", "Barcelona", "10");
         clientManager.registerClient(123456789, "Cristiano", "Ronaldo", address1, "premium");
@@ -109,7 +102,6 @@ class RentManagerTest {
 
     @Test
     void getRent() {
-        System.out.println("getRent");
         Address address1 = new Address("Real", "Madryt", "7");
         clientManager.registerClient(123456789, "Cristiano", "Ronaldo", address1, "premium");
         //RoomChildren room = new RoomChildren(1000, 10, 2, 3);
@@ -123,37 +115,28 @@ class RentManagerTest {
         } catch (Exception e) {}
     }
 
-   //Test nie dziala, zawiesza sie w 132 linii, przyczyna - powstaje 2 entity maneger w rentRepository i nie jest rzucany wyjatek tylko mieli
     @Test
     @Order(1)
     void concurrentRentTest() {
-        System.out.println("concurrentRentTest");
         Address address1 = new Address("Real", "Madryt", "7");
         Address address2 = new Address("FC", "Barcelona", "10");
         Client client1 = new PremiumClient(123456789, "Cristiano", "Ronaldo", address1);
         Client client2 = new DefaultClient(987654321, "Leo", "Messi", address2);
         long roomId = 14;
 
-//        try (EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
-//            EntityManager entityManager = entityManagerFactory.createEntityManager()
-//        ) {
+
         clientManager.registerClient(123456789, "Cristiano", "Ronaldo", address1, "premium");
         clientManager.registerClient(987654321, "Leo", "Messi", address2, "default");
         roomManager.registerRoom(14, 1000, 2, 3);
 
-//        EntityTransaction transaction = entityManager.getTransaction();
-//            transaction.begin();
 
-        Map<String,Object> timeoutProperties = new HashMap<String,Object>();
-        timeoutProperties.put("javax.persistence.lock.timeout", 0);
+        Map<String,Object> properties = new HashMap<String,Object>();
+        properties.put("javax.persistence.lock.timeout", 0);
 
         EntityManager entityManager2 = entityManagerFactory.createEntityManager();
         entityManager2.getTransaction().begin();
 
-//            entityManager.persist(client1);
-
-            Room room = entityManager2.find(Room.class, roomId, LockModeType.PESSIMISTIC_WRITE, timeoutProperties);
-//            System.out.println(room.getRoomNumber());
+        Room room = entityManager2.find(Room.class, roomId, LockModeType.PESSIMISTIC_WRITE, properties);
 
         assertThrows(RuntimeException.class, () -> {
             rentManager.rentRoom(7, client2, room, LocalDateTime.now());
@@ -164,11 +147,8 @@ class RentManagerTest {
         entityManager2.getTransaction().commit();
 
 
-        //}
-        //Room room = roomManager.getRoom(10);
         Rent rent1 = new Rent(7, client1, room, LocalDateTime.now());
         Rent rent2 = rentManager.getRent(7);
-        System.out.println(rent2.getId());
         assertEquals(rent1, rent2);
     }
 }
