@@ -1,6 +1,5 @@
 package pl.nbd.managers;
 
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -18,8 +17,7 @@ class RoomManagerTest {
     @BeforeAll
     public static void setUp() {
         EntityManagerFactory entityManagerFactory = jakarta.persistence.Persistence.createEntityManagerFactory("default");
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        roomRepository = new RoomRepository(entityManager);
+        roomRepository = new RoomRepository(entityManagerFactory);
         roomManager = new RoomManager(roomRepository);
     }
 

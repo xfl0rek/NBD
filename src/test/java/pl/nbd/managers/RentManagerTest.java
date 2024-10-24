@@ -3,7 +3,6 @@ package pl.nbd.managers;
 import jakarta.persistence.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import pl.nbd.model.*;
 import pl.nbd.repository.ClientRepository;
@@ -23,20 +22,16 @@ class RentManagerTest {
     private static ClientManager clientManager;
     private static RoomRepository roomRepository;
     private static RoomManager roomManager;
-
-    private static EntityManager entityManager;
-
     private static EntityManagerFactory entityManagerFactory;
 
     @BeforeAll
     public static void setUp() {
         entityManagerFactory = jakarta.persistence.Persistence.createEntityManagerFactory("default");
-        entityManager = entityManagerFactory.createEntityManager();
-        rentRepository = new RentRepository(entityManager);
+        rentRepository = new RentRepository(entityManagerFactory);
         rentManager = new RentManager(rentRepository);
-        clientRepository = new ClientRepository(entityManager);
+        clientRepository = new ClientRepository(entityManagerFactory);
         clientManager = new ClientManager(clientRepository);
-        roomRepository = new RoomRepository(entityManager);
+        roomRepository = new RoomRepository(entityManagerFactory);
         roomManager = new RoomManager(roomRepository);
     }
 

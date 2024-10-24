@@ -1,6 +1,5 @@
 package pl.nbd.managers;
 
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import org.junit.jupiter.api.Assertions;
@@ -22,8 +21,7 @@ class ClientManagerTest {
     @BeforeAll
     public static void setUp() {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        clientRepository = new ClientRepository(entityManager);
+        clientRepository = new ClientRepository(entityManagerFactory);
         clientManager = new ClientManager(clientRepository);
     }
 

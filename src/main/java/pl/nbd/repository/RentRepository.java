@@ -13,14 +13,15 @@ import java.util.List;
 import java.util.Map;
 
 public class RentRepository implements Repository<Rent> {
-    private EntityManager entityManager;
+    private EntityManagerFactory entityManagerFactory;
 
-    public RentRepository(EntityManager entityManager) {
-        this.entityManager = entityManager;
+    public RentRepository(EntityManagerFactory entityManagerFactory) {
+        this.entityManagerFactory = entityManagerFactory;
     }
 
 
     public void createReservation(long id, Client client, Room room, LocalDateTime startDate) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
             Map<String, Object> properties = new HashMap<>();
             properties.put("javax.persistence.lock.timeout", 0);
@@ -38,6 +39,7 @@ public class RentRepository implements Repository<Rent> {
 
     @Override
     public void create(Rent rent) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         entityManager.persist(rent);
         entityManager.getTransaction().commit();
@@ -45,11 +47,13 @@ public class RentRepository implements Repository<Rent> {
 
     @Override
     public Rent read(long id) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
         return entityManager.find(Rent.class, id);
     }
 
     @Override
     public void update(Rent rent) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         entityManager.merge(rent);
         entityManager.getTransaction().commit();
@@ -57,6 +61,7 @@ public class RentRepository implements Repository<Rent> {
 
     @Override
     public void delete(Rent rent) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         Rent managedRent = entityManager.find(Rent.class, rent.getId());
         if (managedRent != null) {
@@ -67,6 +72,7 @@ public class RentRepository implements Repository<Rent> {
 
     @Override
     public List<Rent> getAll() {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Rent> query = criteriaBuilder.createQuery(Rent.class);
         Root<Rent> root = query.from(Rent.class);
