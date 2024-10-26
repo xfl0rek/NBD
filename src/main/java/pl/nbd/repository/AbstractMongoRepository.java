@@ -1,9 +1,12 @@
 package pl.nbd.repository;
 
 import com.mongodb.ConnectionString;
+import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoCredential;
 import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
+import org.bson.UuidRepresentation;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.Conventions;
@@ -29,4 +32,18 @@ public abstract class AbstractMongoRepository implements AutoCloseable {
 
     private MongoClient mongoClient;
     private MongoDatabase hotel;
+
+    private void initDBConnection() {
+        MongoClientSettings settings = MongoClientSettings.builder()
+                .credential(credential)
+                .applyConnectionString(connectionString)
+                .uuidRepresentation(UuidRepresentation.STANDARD)
+                .codecRegistry(CodecRegistries.fromRegistries(MongoClientSettings.
+                        getDefaultCodecRegistry(),
+                        pojoCodecRegistry))
+                .build();
+
+        mongoClient = MongoClients.create(settings);
+        hotel = mongoClient.getDatabase("hotel");
+    }
 }
