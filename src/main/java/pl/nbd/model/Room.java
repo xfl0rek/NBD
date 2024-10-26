@@ -1,13 +1,21 @@
 package pl.nbd.model;
 
+import org.bson.codecs.pojo.annotations.BsonId;
+import org.bson.codecs.pojo.annotations.BsonProperty;
+
 import java.util.Objects;
 
 public abstract class Room {
+    @BsonId
     private long roomNumber;
+    @BsonProperty("baseprice")
     private int basePrice;
+    @BsonProperty("roomcapacity")
     private int roomCapacity;
 
-    public Room(long roomNumber, int basePrice, int roomCapacity) {
+    public Room(@BsonId long roomNumber,
+                @BsonProperty("baseprice") int basePrice,
+                @BsonProperty("roomcapacity") int roomCapacity) {
         this.roomNumber = roomNumber;
         this.basePrice = basePrice;
         this.roomCapacity = roomCapacity;

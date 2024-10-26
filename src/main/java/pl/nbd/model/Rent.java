@@ -1,19 +1,32 @@
 package pl.nbd.model;
 
+import org.bson.codecs.pojo.annotations.BsonId;
+import org.bson.codecs.pojo.annotations.BsonProperty;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Rent {
+    @BsonId
     private long id;
+    @BsonProperty("client")
     private Client client;
+    @BsonProperty("room")
     private Room room;
+    @BsonProperty("begintime")
     private LocalDateTime beginTime;
+    @BsonProperty("endtime")
     private LocalDateTime endTime;
+    @BsonProperty("rentcost")
     private double rentCost;
+    @BsonProperty("isArchive")
     private boolean isArchive;
 
-    public Rent(long id, Client client, Room room, LocalDateTime beginTime) {
+    public Rent(@BsonId long id,
+                @BsonProperty("client") Client client,
+                @BsonProperty("room") Room room,
+                @BsonProperty("begintime") LocalDateTime beginTime) {
         this.id = id;
         this.client = client;
         this.room = room;
