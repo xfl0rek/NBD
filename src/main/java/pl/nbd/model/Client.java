@@ -18,7 +18,6 @@ public abstract class Client {
     @BsonProperty("address")
     private Address address;
 
-    @BsonCreator
     public Client() {
 
     }

@@ -13,7 +13,6 @@ public class Address {
     @BsonProperty("number")
     private String number;
 
-    @BsonCreator
     public Address() {
 
     }
@@ -64,4 +63,3 @@ public class Address {
         return Objects.hash(street, city, number);
     }
 }
-

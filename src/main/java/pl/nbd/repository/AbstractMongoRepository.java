@@ -16,7 +16,7 @@ import java.util.List;
 
 public abstract class AbstractMongoRepository implements AutoCloseable {
     private ConnectionString connectionString = new ConnectionString(
-            "mongodb://mongodb1:27017, mongodb://mongodb2:27018, mongodb://mongodb3:27019/?replicaSet=replica_set_single"
+            "mongodb://mongodb1:27017,mongodb2:27018,mongodb3:27019/?replicaSet=replica_set_single"
     );
 
     private MongoCredential credential = MongoCredential.createCredential(
@@ -33,7 +33,7 @@ public abstract class AbstractMongoRepository implements AutoCloseable {
     private MongoClient mongoClient;
     private MongoDatabase hotel;
 
-    private void initDBConnection() {
+    protected void initDBConnection() {
         MongoClientSettings settings = MongoClientSettings.builder()
                 .credential(credential)
                 .applyConnectionString(connectionString)
@@ -45,5 +45,9 @@ public abstract class AbstractMongoRepository implements AutoCloseable {
 
         mongoClient = MongoClients.create(settings);
         hotel = mongoClient.getDatabase("hotel");
+    }
+
+    public MongoDatabase getDatabase() {
+        return hotel;
     }
 }
