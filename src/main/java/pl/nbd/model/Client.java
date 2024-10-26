@@ -1,19 +1,33 @@
 package pl.nbd.model;
 
+import org.bson.codecs.pojo.annotations.BsonCreator;
+import org.bson.codecs.pojo.annotations.BsonId;
+import org.bson.codecs.pojo.annotations.BsonProperty;
+
 import java.util.Objects;
 
 public abstract class Client {
+    @BsonId
     private long personalID;
+    @BsonProperty("firstname")
     private String firstName;
+    @BsonProperty("lastname")
     private String lastName;
+    @BsonProperty("archive")
     private boolean isArchive = false;
+    @BsonProperty("address")
     private Address address;
 
+    @BsonCreator
     public Client() {
 
     }
 
-    public Client(long personalID, String firstName, String lastName, Address address) {
+    @BsonCreator
+    public Client(@BsonId long personalID,
+                  @BsonProperty("firstname") String firstName,
+                  @BsonProperty("lastname") String lastName,
+                  @BsonProperty("address") Address address) {
         this.personalID = personalID;
         this.firstName = firstName;
         this.lastName = lastName;
