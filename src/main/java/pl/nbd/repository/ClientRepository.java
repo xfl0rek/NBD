@@ -1,5 +1,6 @@
 package pl.nbd.repository;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
 import pl.nbd.model.Client;
 
@@ -15,14 +16,25 @@ public class ClientRepository extends AbstractMongoRepository {
 
     public void create(Client client) {
         MongoCollection<Client> collection = getDatabase().getCollection("clients", Client.class);
-//        MongoCollection<Client> collection = getDatabase().getCollection(getCollectionName(), Client.class);
         collection.insertOne(client);
 
     }
 
-    public MongoCollection<Client> getCollection() {
+    public MongoCollection<Client> read() {
         return getDatabase().getCollection("clients", Client.class);
     }
 
+    public void update(Client client) {
+        MongoCollection<Client> collection = getDatabase().getCollection("clients", Client.class);
+        BasicDBObject update = new BasicDBObject();
+        update.put("_id", client.getPersonalID());
+        collection.replaceOne(update, client);
+    }
 
+    public void delete(long id) {
+        BasicDBObject query = new BasicDBObject();
+        query.put("_id", id);
+        MongoCollection<Client> collection = getDatabase().getCollection("clients", Client.class);
+        collection.deleteOne(query);
+    }
 }
