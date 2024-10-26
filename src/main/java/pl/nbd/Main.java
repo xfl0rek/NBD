@@ -18,9 +18,13 @@ public class Main {
         ClientRepository clientRepository = new ClientRepository();
         System.out.println("elo3");
         clientRepository.create(client);
-        MongoCollection<Client> collection = clientRepository.read();
+        MongoCollection<DefaultClient> collection = clientRepository.read();
         client.setFirstName("Cristiano");
         clientRepository.update(client);
+        collection = clientRepository.read();
+        ArrayList<DefaultClient> clients = collection.find().into(new ArrayList<>());
+        System.out.println(clients.get(0).getFirstName());
+        System.out.println(clients.get(0).getAddress().getStreet());
         System.out.println(collection.countDocuments());
         clientRepository.delete(1);
         System.out.println(collection.countDocuments());
