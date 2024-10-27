@@ -20,19 +20,20 @@ public class ClientManager {
         }
     }
 
-    public void registerClient(int personalID, String firstName, String lastName, Address address, String type) {
+    private boolean clientExists(int personalID) {
         MongoCollection<Client> collection;
         collection = clientRepository.read();
         ArrayList<Client> clients = collection.find().into(new ArrayList<>());
-        boolean clientExists = false;
         for (Client client : clients) {
             if (client.getPersonalID() == personalID) {
-                clientExists = true;
-                break;
+                return true;
             }
         }
+        return false;
+    }
 
-        if (!clientExists) {
+    public void registerClient(int personalID, String firstName, String lastName, Address address, String type) {
+        if (!clientExists(personalID)) {
             if (type.equals("default")) {
                 Client newClient = new DefaultClient(personalID, firstName, lastName, address);
                 clientRepository.create(newClient);
@@ -40,6 +41,12 @@ public class ClientManager {
                 Client newClient = new PremiumClient(personalID, firstName, lastName, address);
                 clientRepository.create(newClient);
             }
+        }
+    }
+
+    public void deleteClient(int personalID) {
+        if (clientExists(personalID)) {
+            clientRepository.delete(personalID);
         }
     }
 }

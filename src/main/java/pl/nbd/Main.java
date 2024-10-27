@@ -91,5 +91,7 @@ public class Main {
         ClientManager clientManager = new ClientManager(repo);
         clientManager.registerClient(123456789, "Cristiano", "Ronaldo", address, "premium");
         clientManager.registerClient(987654321, "Leo", "Messi", address, "default");
+
+        clientManager.deleteClient(987654321);
     }
 }
