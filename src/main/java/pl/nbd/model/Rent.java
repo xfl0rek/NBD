@@ -10,9 +10,9 @@ import java.util.Objects;
 public class Rent {
     @BsonId
     private long id;
-    @BsonProperty("client")
+    @BsonProperty(value = "client", useDiscriminator = true)
     private Client client;
-    @BsonProperty("room")
+    @BsonProperty(value = "room", useDiscriminator = true)
     private Room room;
     @BsonProperty("begintime")
     private LocalDateTime beginTime;

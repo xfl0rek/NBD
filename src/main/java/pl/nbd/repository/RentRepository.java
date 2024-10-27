@@ -19,8 +19,12 @@ public class RentRepository extends AbstractMongoRepository {
         collection.insertOne(rent);
     }
 
+    public MongoCollection<Rent> read() {
+        return getDatabase().getCollection("rents", Rent.class);
+    }
+
     public void update(Rent rent) {
-        MongoCollection<Rent> collection = getDatabase().getCollection("rooms", Rent.class);
+        MongoCollection<Rent> collection = getDatabase().getCollection("rents", Rent.class);
         BasicDBObject update = new BasicDBObject();
         update.put("_id", rent.getId());
         collection.replaceOne(update, rent);

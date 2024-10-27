@@ -3,6 +3,7 @@ package pl.nbd.repository;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
 import pl.nbd.model.Room;
+import pl.nbd.model.RoomRegular;
 
 public class RoomRepository extends AbstractMongoRepository {
     @Override
@@ -17,6 +18,10 @@ public class RoomRepository extends AbstractMongoRepository {
     public void create(Room room) {
         MongoCollection<Room> collection = getDatabase().getCollection("rooms", Room.class);
         collection.insertOne(room);
+    }
+
+    public MongoCollection<RoomRegular> read() {
+        return getDatabase().getCollection("rooms", RoomRegular.class);
     }
 
     public void update(Room room) {

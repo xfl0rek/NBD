@@ -1,10 +1,12 @@
 package pl.nbd.model;
 
+import org.bson.codecs.pojo.annotations.BsonDiscriminator;
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
 import java.util.Objects;
 
+@BsonDiscriminator("room")
 public abstract class Room {
     @BsonId
     private long roomNumber;
