@@ -19,34 +19,44 @@ public class Main {
         ClientRepository clientRepository = new ClientRepository();
         System.out.println("elo3");
         clientRepository.create(client);
-        MongoCollection<DefaultClient> collection;
+        MongoCollection<Client> collection;
         collection = clientRepository.read();
-        ArrayList<DefaultClient> clients = collection.find().into(new ArrayList<>());
+        ArrayList<Client> clients = collection.find().into(new ArrayList<>());
         System.out.println(clients.get(0).getFirstName());
         System.out.println(clients.get(0).getAddress().getStreet());
         System.out.println(collection.countDocuments());
         client.setFirstName("Cristiano");
         clientRepository.update(client);
-        ArrayList<DefaultClient> clients2 = collection.find().into(new ArrayList<>());
+        ArrayList<Client> clients2 = collection.find().into(new ArrayList<>());
         System.out.println(clients2.get(0).getFirstName());
         System.out.println(clients2.get(0).getAddress().getStreet());
         System.out.println(collection.countDocuments());
         clientRepository.delete(1);
         System.out.println(collection.countDocuments());
 
+        Client client1 = new PremiumClient(1, "Jadwiga", "Hymel", address);
+        clientRepository.create(client1);
+        MongoCollection<Client> collection5;
+        collection5 = clientRepository.read();
+        ArrayList<Client> clients5 = collection5.find().into(new ArrayList<>());
+        System.out.println(clients5.get(0).getFirstName());
+        System.out.println(clients5.get(0).getAddress().getStreet());
+        System.out.println(collection5.countDocuments());
+        clientRepository.delete(1);
+
         // Room
 
         Room room = new RoomRegular(1, 1000, 2, true);
         RoomRepository roomRepository = new RoomRepository();
         roomRepository.create(room);
-        MongoCollection<RoomRegular> collection1;
+        MongoCollection<Room> collection1;
         collection1 = roomRepository.read();
-        ArrayList<RoomRegular> rooms = collection1.find().into(new ArrayList<>());
+        ArrayList<Room> rooms = collection1.find().into(new ArrayList<>());
         System.out.println(rooms.get(0).getBasePrice());
         System.out.println(collection1.countDocuments());
         room.setBasePrice(9999);
         roomRepository.update(room);
-        ArrayList<RoomRegular> rooms2 = collection1.find().into(new ArrayList<>());
+        ArrayList<Room> rooms2 = collection1.find().into(new ArrayList<>());
         System.out.println(rooms2.get(0).getBasePrice());
         System.out.println(collection1.countDocuments());
         roomRepository.delete(1);

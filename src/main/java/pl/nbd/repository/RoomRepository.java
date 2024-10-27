@@ -20,8 +20,8 @@ public class RoomRepository extends AbstractMongoRepository {
         collection.insertOne(room);
     }
 
-    public MongoCollection<RoomRegular> read() {
-        return getDatabase().getCollection("rooms", RoomRegular.class);
+    public MongoCollection<Room> read() {
+        return getDatabase().getCollection("rooms", Room.class);
     }
 
     public void update(Room room) {

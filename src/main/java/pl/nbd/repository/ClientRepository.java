@@ -4,6 +4,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
 import pl.nbd.model.Client;
 import pl.nbd.model.DefaultClient;
+import pl.nbd.model.PremiumClient;
 
 public class ClientRepository extends AbstractMongoRepository {
     @Override
@@ -21,9 +22,8 @@ public class ClientRepository extends AbstractMongoRepository {
 
     }
 
-    //TODO zamienic na Client z DefaultClient
-    public MongoCollection<DefaultClient> read() {
-        return getDatabase().getCollection("clients", DefaultClient.class);
+    public MongoCollection<Client> read() {
+        return getDatabase().getCollection("clients", Client.class);
     }
 
     public void update(Client client) {
