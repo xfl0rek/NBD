@@ -2,6 +2,7 @@ package pl.nbd;
 
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
+import pl.nbd.managers.ClientManager;
 import pl.nbd.model.*;
 import pl.nbd.repository.ClientRepository;
 import pl.nbd.repository.RentRepository;
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         System.out.println("elo");
         Address address = new Address("Laczna", "Linpinki", "43");
         Client client = new DefaultClient(1, "Jadwiga", "Hymel", address);
@@ -83,5 +84,12 @@ public class Main {
         System.out.println(rents1.get(0).getEndTime());
         rentRepository.delete(1);
         System.out.println(collection2.countDocuments());
+
+        // ClientManager
+
+        ClientRepository repo = new ClientRepository();
+        ClientManager clientManager = new ClientManager(repo);
+        clientManager.registerClient(123456789, "Cristiano", "Ronaldo", address, "premium");
+        clientManager.registerClient(987654321, "Leo", "Messi", address, "default");
     }
 }

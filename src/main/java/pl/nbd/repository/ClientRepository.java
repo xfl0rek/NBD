@@ -3,8 +3,6 @@ package pl.nbd.repository;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
 import pl.nbd.model.Client;
-import pl.nbd.model.DefaultClient;
-import pl.nbd.model.PremiumClient;
 
 public class ClientRepository extends AbstractMongoRepository {
     @Override
