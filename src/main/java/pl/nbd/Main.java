@@ -93,5 +93,7 @@ public class Main {
         clientManager.registerClient(987654321, "Leo", "Messi", address, "default");
 
         clientManager.deleteClient(987654321);
+
+        clientManager.updateClientInformation(123456789, "Vinicius", "Junior", address, "default");
     }
 }

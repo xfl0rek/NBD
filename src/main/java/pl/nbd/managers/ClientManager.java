@@ -49,4 +49,20 @@ public class ClientManager {
             clientRepository.delete(personalID);
         }
     }
+
+    //TODO oharnąć, teraz pora na metina
+    public void updateClientInformation(int personalID, String firstName, String lastName, Address address, String type) {
+        if (!clientExists(personalID)) {
+            if (type.equals("default")) {
+                Client existingClient = new DefaultClient();
+                existingClient.setFirstName(firstName);
+                existingClient.setLastName(lastName);
+                existingClient.setAddress(address);
+                clientRepository.update(existingClient);
+            } else if (type.equals("premium")) {
+                Client existingClient = new PremiumClient(personalID, firstName, lastName, address);
+                clientRepository.update(existingClient);
+            }
+        }
+    }
 }
