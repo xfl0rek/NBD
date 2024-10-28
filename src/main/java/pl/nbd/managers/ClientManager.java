@@ -66,4 +66,13 @@ public class ClientManager {
             clientRepository.update(client);
         }
     }
+
+    public void unregisterClient(int personalID) {
+        MongoCollection<Client> collection = clientRepository.read();
+        Client client = collection.find(Filters.eq("_id", personalID)).first();
+        if (client != null) {
+            client.setArchive(true);
+            clientRepository.update(client);
+        }
+    }
 }

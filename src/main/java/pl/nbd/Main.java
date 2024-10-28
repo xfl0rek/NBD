@@ -95,5 +95,6 @@ public class Main {
         clientManager.deleteClient(987654321);
 
         clientManager.updateClientInformation(123456789, "Vinicius", "Junior", address, "default");
+        clientManager.unregisterClient(123456789);
     }
 }
