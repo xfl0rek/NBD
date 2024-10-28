@@ -98,10 +98,14 @@ public class Main {
         clientManager.updateClientInformation(123456789, "Vinicius", "Junior", address, "default");
         clientManager.unregisterClient(123456789);
 
+        clientManager.deleteClient(123456789);
+
         // RoomManager
         RoomRepository repo2 = new RoomRepository();
         RoomManager roomManager = new RoomManager(repo2);
         roomManager.registerRoom(420, 9999, 2, true);
         roomManager.registerRoom(999, 9999, 2, 2);
+
+        roomManager.deleteRoom(999);
     }
 }

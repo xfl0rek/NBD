@@ -43,4 +43,10 @@ public class RoomManager {
             roomRepository.create(room);
         }
     }
+
+    public void deleteRoom(int roomNumber) {
+        if (roomExists(roomNumber)) {
+            roomRepository.delete(roomNumber);
+        }
+    }
 }
