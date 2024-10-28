@@ -1,6 +1,9 @@
 package pl.nbd.managers;
 
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
+import org.bson.conversions.Bson;
 import pl.nbd.model.Address;
 import pl.nbd.model.Client;
 import pl.nbd.model.DefaultClient;
@@ -50,19 +53,17 @@ public class ClientManager {
         }
     }
 
-    //TODO oharnąć, teraz pora na metina
     public void updateClientInformation(int personalID, String firstName, String lastName, Address address, String type) {
-        if (!clientExists(personalID)) {
+        if (clientExists(personalID)) {
+            Client client;
             if (type.equals("default")) {
-                Client existingClient = new DefaultClient();
-                existingClient.setFirstName(firstName);
-                existingClient.setLastName(lastName);
-                existingClient.setAddress(address);
-                clientRepository.update(existingClient);
+                client = new DefaultClient(personalID, firstName, lastName, address);
             } else if (type.equals("premium")) {
-                Client existingClient = new PremiumClient(personalID, firstName, lastName, address);
-                clientRepository.update(existingClient);
+                client = new PremiumClient(personalID, firstName, lastName, address);
+            } else {
+                throw new IllegalArgumentException("Invalid type");
             }
+            clientRepository.update(client);
         }
     }
 }
