@@ -55,14 +55,32 @@ class ClientManagerTest {
         Client client = clientManager.getClient(1);
         Assertions.assertNotNull(client);
         clientManager.deleteClient(1);
-        
+        Client client1 = clientManager.getClient(1);
+        Assertions.assertNull(client1);
     }
 
     @Test
     void updateClientInformation() {
+        Address address = new Address("Laczna", "Lipniki", "43");
+        clientManager.registerClient(1, "Jadwiga", "Hymel", address, "default");
+        Client client = clientManager.getClient(1);
+        Assertions.assertEquals("Jadwiga", client.getFirstName());
+
+        clientManager.updateClientInformation(1, "Syn", "Hymel", address, "default");
+        Client client1 = clientManager.getClient(1);
+        Assertions.assertEquals("Syn", client1.getFirstName());
     }
 
     @Test
     void unregisterClient() {
+        Address address = new Address("Laczna", "Lipniki", "43");
+        clientManager.registerClient(1, "Jadwiga", "Hymel", address, "default");
+        Client client = clientManager.getClient(1);
+        assertFalse(client.isArchive());
+
+        clientManager.unregisterClient(1);
+        Client client1 = clientManager.getClient(1);
+        assertTrue(client1.isArchive());
+
     }
 }
