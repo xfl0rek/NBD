@@ -2,8 +2,6 @@ package pl.nbd.managers;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.Updates;
-import org.bson.conversions.Bson;
 import pl.nbd.model.Address;
 import pl.nbd.model.Client;
 import pl.nbd.model.DefaultClient;
@@ -25,7 +23,7 @@ public class ClientManager {
 
     private boolean clientExists(int personalID) {
         MongoCollection<Client> collection;
-        collection = clientRepository.read();
+        collection = clientRepository.readAll();
         ArrayList<Client> clients = collection.find().into(new ArrayList<>());
         for (Client client : clients) {
             if (client.getPersonalID() == personalID) {
@@ -33,6 +31,14 @@ public class ClientManager {
             }
         }
         return false;
+    }
+
+    public Client getClient(int personalID) {
+        return this.clientRepository.read(personalID);
+    }
+
+    public MongoCollection<Client> getAllClients() {
+        return clientRepository.readAll();
     }
 
     public void registerClient(int personalID, String firstName, String lastName, Address address, String type) {
@@ -68,7 +74,7 @@ public class ClientManager {
     }
 
     public void unregisterClient(int personalID) {
-        MongoCollection<Client> collection = clientRepository.read();
+        MongoCollection<Client> collection = clientRepository.readAll();
         Client client = collection.find(Filters.eq("_id", personalID)).first();
         if (client != null) {
             client.setArchive(true);

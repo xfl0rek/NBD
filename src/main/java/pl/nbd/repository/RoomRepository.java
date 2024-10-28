@@ -2,8 +2,8 @@ package pl.nbd.repository;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
 import pl.nbd.model.Room;
-import pl.nbd.model.RoomRegular;
 
 public class RoomRepository extends AbstractMongoRepository {
     @Override
@@ -20,8 +20,14 @@ public class RoomRepository extends AbstractMongoRepository {
         collection.insertOne(room);
     }
 
-    public MongoCollection<Room> read() {
+    public MongoCollection<Room> readAll() {
         return getDatabase().getCollection("rooms", Room.class);
+    }
+
+    public Room read(long id) {
+        MongoCollection<Room> collection = getDatabase().getCollection("rooms", Room.class);
+        Room room = collection.find(Filters.eq("_id", id)).first();
+        return room;
     }
 
     public void update(Room room) {

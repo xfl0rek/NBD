@@ -2,6 +2,7 @@ package pl.nbd.repository;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
 import pl.nbd.model.Client;
 
 public class ClientRepository extends AbstractMongoRepository {
@@ -20,8 +21,13 @@ public class ClientRepository extends AbstractMongoRepository {
 
     }
 
-    public MongoCollection<Client> read() {
+    public MongoCollection<Client> readAll() {
         return getDatabase().getCollection("clients", Client.class);
+    }
+
+    public Client read(long id) {
+        MongoCollection<Client> collection = getDatabase().getCollection("clients", Client.class);
+        return collection.find(Filters.eq("_id", id)).first();
     }
 
     public void update(Client client) {

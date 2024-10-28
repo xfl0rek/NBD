@@ -1,8 +1,8 @@
 package pl.nbd;
 
 import com.mongodb.client.MongoCollection;
-import org.bson.Document;
 import pl.nbd.managers.ClientManager;
+import pl.nbd.managers.RentManager;
 import pl.nbd.managers.RoomManager;
 import pl.nbd.model.*;
 import pl.nbd.repository.ClientRepository;
@@ -22,7 +22,7 @@ public class Main {
         System.out.println("elo3");
         clientRepository.create(client);
         MongoCollection<Client> collection;
-        collection = clientRepository.read();
+        collection = clientRepository.readAll();
         ArrayList<Client> clients = collection.find().into(new ArrayList<>());
         System.out.println(clients.get(0).getFirstName());
         System.out.println(clients.get(0).getAddress().getStreet());
@@ -39,7 +39,7 @@ public class Main {
         Client client1 = new PremiumClient(1, "Jadwiga", "Hymel", address);
         clientRepository.create(client1);
         MongoCollection<Client> collection5;
-        collection5 = clientRepository.read();
+        collection5 = clientRepository.readAll();
         ArrayList<Client> clients5 = collection5.find().into(new ArrayList<>());
         System.out.println(clients5.get(0).getFirstName());
         System.out.println(clients5.get(0).getAddress().getStreet());
@@ -52,7 +52,7 @@ public class Main {
         RoomRepository roomRepository = new RoomRepository();
         roomRepository.create(room);
         MongoCollection<Room> collection1;
-        collection1 = roomRepository.read();
+        collection1 = roomRepository.readAll();
         ArrayList<Room> rooms = collection1.find().into(new ArrayList<>());
         System.out.println(rooms.get(0).getBasePrice());
         System.out.println(collection1.countDocuments());
@@ -72,7 +72,7 @@ public class Main {
         RentRepository rentRepository = new RentRepository();
         rentRepository.create(rent);
         MongoCollection<Rent> collection2;
-        collection2 = rentRepository.read();
+        collection2 = rentRepository.readAll();
         ArrayList<Rent> rents = collection2.find().into(new ArrayList<>());
         System.out.println(rents.get(0).getRentCost());
         System.out.println(collection2.countDocuments());
@@ -107,5 +107,18 @@ public class Main {
         roomManager.registerRoom(999, 9999, 2, 2);
 
         roomManager.deleteRoom(999);
+
+        roomManager.updateRoomInformation(420, 7777, 10, 3);
+
+        roomManager.deleteRoom(420);
+
+        // RentManager
+        Client synaniemawdomu = new DefaultClient(777888999, "Jadwiga", "Hymel", address);
+        Room styrta = new RoomChildren(998, 1500, 2, 0);
+        RentRepository repo3 = new RentRepository();
+        RentManager rentManager = new RentManager(repo3);
+        rentManager.rentRoom(998, synaniemawdomu, styrta, LocalDateTime.now());
+
+        rentManager.returnRoom(998, LocalDateTime.now().plusDays(7));
     }
 }
