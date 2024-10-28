@@ -1,5 +1,8 @@
 package pl.nbd.model;
 
+import org.bson.codecs.pojo.annotations.BsonDiscriminator;
+
+@BsonDiscriminator("children")
 public class RoomChildren extends Room {
     private int numberOfChildren;
 

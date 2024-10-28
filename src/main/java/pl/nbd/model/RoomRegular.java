@@ -1,5 +1,8 @@
 package pl.nbd.model;
 
+import org.bson.codecs.pojo.annotations.BsonDiscriminator;
+
+@BsonDiscriminator("regular")
 public class RoomRegular extends Room {
     private boolean isBreakfastIncluded;
 
