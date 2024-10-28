@@ -3,6 +3,7 @@ package pl.nbd;
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
 import pl.nbd.managers.ClientManager;
+import pl.nbd.managers.RoomManager;
 import pl.nbd.model.*;
 import pl.nbd.repository.ClientRepository;
 import pl.nbd.repository.RentRepository;
@@ -96,5 +97,11 @@ public class Main {
 
         clientManager.updateClientInformation(123456789, "Vinicius", "Junior", address, "default");
         clientManager.unregisterClient(123456789);
+
+        // RoomManager
+        RoomRepository repo2 = new RoomRepository();
+        RoomManager roomManager = new RoomManager(repo2);
+        roomManager.registerRoom(420, 9999, 2, true);
+        roomManager.registerRoom(999, 9999, 2, 2);
     }
 }
