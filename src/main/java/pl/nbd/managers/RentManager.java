@@ -42,6 +42,12 @@ public class RentManager {
 
     public void rentRoom(int id, Client client, Room room, LocalDateTime startDate) {
         if (!rentExists(id)) {
+            MongoCollection<Rent> rentCollection = rentRepository.readAll();
+            for (Rent rent : rentCollection.find(Filters.eq("room", room)).into(new ArrayList<>())) {
+                if (rent.getEndTime() == null) {
+                    throw new IllegalArgumentException("Room is already rented");
+                }
+            }
             Rent rent = new Rent(id, client, room, startDate);
             rentRepository.create(rent);
         }
