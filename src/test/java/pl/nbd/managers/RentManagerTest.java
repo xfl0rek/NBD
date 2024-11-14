@@ -90,4 +90,40 @@ class RentManagerTest {
         assertThrows(IllegalArgumentException.class, () -> rentManager.rentRoom(2, client2, room, startDate));
     }
 
+    @Test
+    void deleteRentTest() {
+        Address address = new Address("Laczna", "Lipinki", "43");
+        Client client = new DefaultClient(1, "Jadwiga", "Hymel", address);
+        Room room = new RoomRegular(1, 100, 2, true);
+
+        LocalDateTime startDate = LocalDateTime.now();
+        clientManager.registerClient(1, "Jadwiga", "Hymel", address, "default");
+        roomManager.registerRoom(1, 100, 2, true);
+        rentManager.rentRoom(1, client, room, startDate);
+        rentManager.returnRoom(1, LocalDateTime.now().plusDays(3));
+        rentManager.deleteRent(1);
+        assertNull(rentManager.getRent(1));
+    }
+
+    @Test
+    void updateRentTest() {
+        Address address = new Address("Laczna", "Lipinki", "43");
+        Client client = new DefaultClient(1, "Jadwiga", "Hymel", address);
+        Room room = new RoomRegular(1, 100, 2, true);
+        Address address2 = new Address("Polna", "Warszawa", "11");
+        Client client2 = new DefaultClient(2, "Jan", "Robak", address2);
+
+        LocalDateTime startDate = LocalDateTime.now();
+        clientManager.registerClient(1, "Jadwiga", "Hymel", address, "default");
+        clientManager.registerClient(2, "Jan", "Robak", address2, "default");
+        roomManager.registerRoom(1, 100, 2, true);
+        rentManager.rentRoom(1, client, room, startDate);
+        rentManager.update(1, client2, room, startDate);
+        assertEquals("Jan", rentManager.getRent(1).getClient().getFirstName());
+    }
+
+    @Test
+    void concurrentRentTest() {
+
+    }
 }

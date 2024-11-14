@@ -50,4 +50,8 @@ public abstract class AbstractMongoRepository implements AutoCloseable {
     public MongoDatabase getDatabase() {
         return hotel;
     }
+
+    public MongoClient getMongoClient() {
+        return mongoClient;
+    }
 }

@@ -14,6 +14,8 @@ public abstract class Room {
     private int basePrice;
     @BsonProperty("roomcapacity")
     private int roomCapacity;
+    @BsonProperty("rented")
+    private int rented = 0;
 
     public Room(@BsonId long roomNumber,
                 @BsonProperty("baseprice") int basePrice,
@@ -49,6 +51,10 @@ public abstract class Room {
 
     public void setRoomCapacity(int roomCapacity) {
         this.roomCapacity = roomCapacity;
+    }
+
+    public int getRented() {
+        return rented;
     }
 
     @Override

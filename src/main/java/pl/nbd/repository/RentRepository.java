@@ -1,8 +1,11 @@
 package pl.nbd.repository;
 
 import com.mongodb.BasicDBObject;
+import com.mongodb.client.ClientSession;
+import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
+import pl.nbd.model.Client;
 import pl.nbd.model.Rent;
 
 public class RentRepository extends AbstractMongoRepository {
@@ -16,6 +19,7 @@ public class RentRepository extends AbstractMongoRepository {
     }
 
     public void create(Rent rent) {
+        ClientSession clientSession = getMongoClient().startSession();
         MongoCollection<Rent> collection = getDatabase().getCollection("rents", Rent.class);
         collection.insertOne(rent);
     }
@@ -26,8 +30,7 @@ public class RentRepository extends AbstractMongoRepository {
 
     public Rent read(long id) {
         MongoCollection<Rent> collection = getDatabase().getCollection("rents", Rent.class);
-        Rent rent = collection.find(Filters.eq("_id", id)).first();
-        return rent;
+        return collection.find(Filters.eq("_id", id)).first();
     }
 
     public void update(Rent rent) {
