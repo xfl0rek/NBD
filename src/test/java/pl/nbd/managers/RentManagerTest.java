@@ -126,9 +126,4 @@ class RentManagerTest {
         rentManager.update(1, client2, room, startDate);
         assertEquals("Jan", rentManager.getRent(1).getClient().getFirstName());
     }
-
-    @Test
-    void concurrentRentTest() {
-
-    }
 }
