@@ -6,12 +6,21 @@ import com.mongodb.MongoCredential;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.CreateCollectionOptions;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.ValidationOptions;
+import org.bson.BsonType;
 import org.bson.UuidRepresentation;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.Conventions;
 import org.bson.codecs.pojo.PojoCodecProvider;
+import org.bson.conversions.Bson;
+import pl.nbd.model.Room;
+import pl.nbd.model.RoomChildren;
+import pl.nbd.model.RoomRegular;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractMongoRepository implements AutoCloseable {
@@ -26,6 +35,7 @@ public abstract class AbstractMongoRepository implements AutoCloseable {
     private CodecRegistry pojoCodecRegistry = CodecRegistries.fromProviders(
             PojoCodecProvider.builder()
                     .automatic(true)
+                    .register(Room.class, RoomRegular.class, RoomChildren.class)
                     .conventions(List.of(Conventions.ANNOTATION_CONVENTION))
                     .build()
     );
@@ -45,6 +55,23 @@ public abstract class AbstractMongoRepository implements AutoCloseable {
 
         mongoClient = MongoClients.create(settings);
         hotel = mongoClient.getDatabase("hotel");
+        if (!getDatabase().listCollectionNames().into(new ArrayList<>()).contains("rooms")) {
+            createRoomsCollection();
+        }
+    }
+
+    private void createRoomsCollection() {
+        Bson isRentedType = Filters.type("rented", BsonType.INT32);
+        Bson isRentedMin = Filters.gte("rented", 0);
+        Bson isRentedMax = Filters.lte("rented", 1);
+        Bson isRented = Filters.and(isRentedType, isRentedMin, isRentedMax);
+
+        ValidationOptions validationOptions = new ValidationOptions()
+                .validator(isRented);
+
+        CreateCollectionOptions createCollectionOptions = new CreateCollectionOptions()
+                .validationOptions(validationOptions);
+        getDatabase().createCollection("rooms", createCollectionOptions);
     }
 
     public MongoDatabase getDatabase() {

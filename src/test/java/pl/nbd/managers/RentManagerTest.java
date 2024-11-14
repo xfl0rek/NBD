@@ -1,8 +1,9 @@
 package pl.nbd.managers;
 
+import com.mongodb.MongoWriteException;
 import com.mongodb.client.MongoCollection;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.nbd.model.*;
 import pl.nbd.repository.ClientRepository;
@@ -22,8 +23,8 @@ class RentManagerTest {
     public static RoomManager roomManager;
     public static RentManager rentManager;
 
-    @BeforeAll
-    static void setUp() {
+    @BeforeEach
+    void setUp() {
         clientRepository = new ClientRepository();
         roomRepository = new RoomRepository();
         rentRepository = new RentRepository();
@@ -72,6 +73,11 @@ class RentManagerTest {
         Rent rent = rentManager.getRent(1);
         assertEquals(3, rent.getRentDays());
         assertEquals(300, rent.getRentCost());
+
+        Address address2 = new Address("Polna", "Warszawa", "11");
+        Client client2 = new DefaultClient(2, "Jan", "Robak", address2);
+        clientManager.registerClient(2, "Jan", "Robak", address2, "default");
+        assertDoesNotThrow(() -> rentManager.rentRoom(2, client2, room, LocalDateTime.now()));
     }
 
     @Test
@@ -87,7 +93,7 @@ class RentManagerTest {
         clientManager.registerClient(2, "Jan", "Robak", address2, "default");
         roomManager.registerRoom(1, 100, 2, true);
         rentManager.rentRoom(1, client, room, startDate);
-        assertThrows(IllegalArgumentException.class, () -> rentManager.rentRoom(2, client2, room, startDate));
+        assertThrows(MongoWriteException.class, () -> rentManager.rentRoom(2, client2, room, startDate));
     }
 
     @Test
@@ -112,7 +118,6 @@ class RentManagerTest {
         Room room = new RoomRegular(1, 100, 2, true);
         Address address2 = new Address("Polna", "Warszawa", "11");
         Client client2 = new DefaultClient(2, "Jan", "Robak", address2);
-
         LocalDateTime startDate = LocalDateTime.now();
         clientManager.registerClient(1, "Jadwiga", "Hymel", address, "default");
         clientManager.registerClient(2, "Jan", "Robak", address2, "default");
