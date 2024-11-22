@@ -9,11 +9,11 @@ public class RedisRoomTest {
 
     @Test
     public void test() {
-        Room room = new Room(1, 100, 4);
+        Room room = new RoomChildren(1, 100, 4, 2);
         RedisRoomRepository rep = new RedisRoomRepository();
-
+        System.out.println(room.getClass());
         rep.save(room);
-        Room room1 = rep.findByRoomNumber(1);
+        RoomChildren room1 = (RoomChildren) rep.findByRoomNumber(1);
 
         System.out.println(room1.getRoomNumber());
         System.out.println(room1.getRoomCapacity());

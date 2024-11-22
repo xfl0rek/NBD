@@ -1,5 +1,7 @@
 package pl.nbd.model;
 
+import jakarta.json.bind.annotation.JsonbSubtype;
+import jakarta.json.bind.annotation.JsonbTypeInfo;
 import org.bson.codecs.pojo.annotations.BsonDiscriminator;
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.codecs.pojo.annotations.BsonProperty;
@@ -7,7 +9,12 @@ import org.bson.codecs.pojo.annotations.BsonProperty;
 import java.util.Objects;
 
 @BsonDiscriminator("room")
-public class Room {
+@JsonbTypeInfo({
+        @JsonbSubtype(alias = "ROOM_REGULAR", type = RoomRegular.class),
+        @JsonbSubtype(alias = "ROOM_CHILDREN", type = RoomChildren.class),
+})
+
+public abstract class Room {
     @BsonId
     private long roomNumber;
     @BsonProperty("baseprice")
