@@ -1,14 +1,11 @@
 package pl.nbd.managers;
 
 import com.mongodb.MongoWriteException;
-import com.mongodb.client.MongoCollection;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.nbd.model.*;
-import pl.nbd.repository.ClientRepository;
-import pl.nbd.repository.RentRepository;
-import pl.nbd.repository.RoomRepository;
+import pl.nbd.repository.*;
 
 import java.time.LocalDateTime;
 
@@ -17,7 +14,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class RentManagerTest {
 
     public static ClientRepository clientRepository;
-    public static RoomRepository roomRepository;
+    public static DecoratorRoomRepository roomRepository;
+    public static RoomRepository roomRepository2;
+    public static RedisRoomRepository redisRoomRepository;
     public static RentRepository rentRepository;
     public static ClientManager clientManager;
     public static RoomManager roomManager;
@@ -26,7 +25,9 @@ class RentManagerTest {
     @BeforeEach
     void setUp() {
         clientRepository = new ClientRepository();
-        roomRepository = new RoomRepository();
+        roomRepository2 = new RoomRepository();
+        redisRoomRepository = new RedisRoomRepository();
+        roomRepository = new DecoratorRoomRepository(roomRepository2, redisRoomRepository);
         rentRepository = new RentRepository();
         clientManager = new ClientManager(clientRepository);
         roomManager = new RoomManager(roomRepository);
@@ -35,12 +36,10 @@ class RentManagerTest {
 
     @AfterEach
     void dropDB() {
-        MongoCollection<Rent> rentCollection = rentManager.getAllRents();
-        MongoCollection<Room> roomCollection = roomManager.getAllRooms();
-        MongoCollection<Client> clientCollection = clientManager.getAllClients();
-        rentCollection.drop();
-        roomCollection.drop();
-        clientCollection.drop();
+        clientRepository.getDatabase().getCollection("clients", Client.class).drop();
+        roomRepository2.getDatabase().getCollection("rooms", Room.class).drop();
+        rentRepository.getDatabase().getCollection("rents", Rent.class).drop();
+        redisRoomRepository.clearCache();
     }
 
     @Test

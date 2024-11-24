@@ -1,31 +1,37 @@
 package pl.nbd.managers;
 
-import com.mongodb.client.MongoCollection;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import pl.nbd.model.Room;
 import pl.nbd.model.RoomChildren;
 import pl.nbd.model.RoomRegular;
+import pl.nbd.repository.DecoratorRoomRepository;
+import pl.nbd.repository.RedisRoomRepository;
 import pl.nbd.repository.RoomRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class RoomManagerTest {
 
-    public static RoomRepository roomRepository;
+    public static RoomRepository roomRepository2;
     public static RoomManager roomManager;
+    public static DecoratorRoomRepository roomRepository;
+    public static RedisRoomRepository redisRoomRepository;
 
     @BeforeAll
     static void setUp() {
-        roomRepository = new RoomRepository();
+        roomRepository2 = new RoomRepository();
+        redisRoomRepository = new RedisRoomRepository();
+        roomRepository = new DecoratorRoomRepository(roomRepository2, redisRoomRepository);
         roomManager = new RoomManager(roomRepository);
+
     }
 
     @AfterEach
     void dropDB() {
-        MongoCollection<Room> collection = roomManager.getAllRooms();
-        collection.drop();
+        roomRepository2.getDatabase().getCollection("rooms", Room.class).drop();
+        redisRoomRepository.clearCache();
     }
 
     @Test
@@ -52,7 +58,6 @@ class RoomManagerTest {
         Room room2 = roomManager.getRoom(1);
         assertNull(room2);
     }
-
 
     @Test
     void  updateRoomTest() {

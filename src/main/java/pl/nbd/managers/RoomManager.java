@@ -1,17 +1,16 @@
 package pl.nbd.managers;
 
-import com.mongodb.client.MongoCollection;
 import pl.nbd.model.Room;
 import pl.nbd.model.RoomChildren;
 import pl.nbd.model.RoomRegular;
-import pl.nbd.repository.RoomRepository;
+import pl.nbd.repository.DecoratorRoomRepository;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class RoomManager {
-    private RoomRepository roomRepository;
+    private DecoratorRoomRepository roomRepository;
 
-    public RoomManager(RoomRepository roomRepository) {
+    public RoomManager(DecoratorRoomRepository roomRepository) {
         if (roomRepository == null) {
             throw new NullPointerException("RoomRepository is null");
         } else {
@@ -20,8 +19,7 @@ public class RoomManager {
     }
 
     private boolean roomExists(int roomNumber) {
-        MongoCollection<Room> collection = roomRepository.readAll();
-        ArrayList<Room> rooms = collection.find().into(new ArrayList<>());
+        List<Room> rooms = roomRepository.readAll();
         for (Room room : rooms) {
             if (room.getRoomNumber() == roomNumber) {
                 return true;
@@ -34,7 +32,7 @@ public class RoomManager {
         return roomRepository.read(roomNumber);
     }
 
-    public MongoCollection<Room> getAllRooms() {
+    public List<Room> getAllRooms() {
         return roomRepository.readAll();
     }
 

@@ -5,7 +5,10 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import pl.nbd.model.Room;
 
-public class RoomRepository extends AbstractMongoRepository {
+import java.util.ArrayList;
+import java.util.List;
+
+public class RoomRepository extends AbstractMongoRepository implements IRoomRepository {
     @Override
     public void close() throws Exception {
 
@@ -15,19 +18,22 @@ public class RoomRepository extends AbstractMongoRepository {
         this.initDBConnection();
     }
 
+    @Override
     public void create(Room room) {
         MongoCollection<Room> collection = getDatabase().getCollection("rooms", Room.class);
         collection.insertOne(room);
     }
 
-    public MongoCollection<Room> readAll() {
-        return getDatabase().getCollection("rooms", Room.class);
+    @Override
+    public List<Room> readAll() {
+        MongoCollection<Room> collection = getDatabase().getCollection("rooms", Room.class);
+        return collection.find().into(new ArrayList<>());
     }
 
+    @Override
     public Room read(long id) {
         MongoCollection<Room> collection = getDatabase().getCollection("rooms", Room.class);
-        Room room = collection.find(Filters.eq("_id", id)).first();
-        return room;
+        return collection.find(Filters.eq("_id", id)).first();
     }
 
     public void update(Room room) {
@@ -37,6 +43,7 @@ public class RoomRepository extends AbstractMongoRepository {
         collection.replaceOne(update, room);
     }
 
+    @Override
     public void delete(long id) {
         BasicDBObject query = new BasicDBObject();
         query.put("_id", id);

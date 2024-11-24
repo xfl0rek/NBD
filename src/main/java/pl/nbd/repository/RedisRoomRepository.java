@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class RedisRoomRepository extends AbstractRedisRepository {
+public class RedisRoomRepository extends AbstractRedisRepository implements IRoomRepository {
 
     private String hashPrefix = "room:";
     private Jsonb jsonb = JsonbBuilder.create();
@@ -17,18 +17,42 @@ public class RedisRoomRepository extends AbstractRedisRepository {
         this.initDbConnection();
     }
 
-    public void save(Room room) {
+    @Override
+    public void create(Room room) {
         try {
             String key = hashPrefix + Long.toString(room.getRoomNumber());
             String json = jsonb.toJson(room);
-            System.out.println(json);
             pool.set(key, json);
+            pool.expire(key, 300);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public Room findByRoomNumber(long roomNumber) {
+    @Override
+    public void delete(long roomId) {
+        try {
+            String key = hashPrefix + Long.toString(roomId);
+            pool.del(key);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void update(Room room) {
+        try {
+            String key = hashPrefix + Long.toString(room.getRoomNumber());
+            String json = jsonb.toJson(room);
+            pool.set(key, json);
+            pool.expire(key, 300);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public Room read(long roomNumber) {
         try {
             String key = hashPrefix + Long.toString(roomNumber);
             String json = pool.get(key);
@@ -39,7 +63,8 @@ public class RedisRoomRepository extends AbstractRedisRepository {
         }
     }
 
-    public List<Room> findAll() {
+    @Override
+    public List<Room> readAll() {
         try {
             List<Room> rooms = new ArrayList<>();
             Set<String> keys = pool.keys(hashPrefix + "*");
@@ -55,5 +80,16 @@ public class RedisRoomRepository extends AbstractRedisRepository {
         }
     }
 
+   public void clearCache() {
+        try {
+            pool.flushAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
+    public void close() {
+        clearCache();
+        pool.close();
+    }
 }
