@@ -16,7 +16,7 @@ public class RentRepository extends AbstractMongoRepository {
     }
 
     public RentRepository() {
-        this.initDBConnection();
+        this.initDBConnection("hotel");
     }
 
     public void create(Rent rent) {

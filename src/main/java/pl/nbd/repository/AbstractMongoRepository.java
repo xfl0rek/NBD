@@ -41,9 +41,9 @@ public abstract class AbstractMongoRepository implements AutoCloseable {
     );
 
     private MongoClient mongoClient;
-    private MongoDatabase hotel;
+    private MongoDatabase database;
 
-    protected void initDBConnection() {
+    protected void initDBConnection(String databaseName) {
         MongoClientSettings settings = MongoClientSettings.builder()
                 .credential(credential)
                 .applyConnectionString(connectionString)
@@ -54,7 +54,7 @@ public abstract class AbstractMongoRepository implements AutoCloseable {
                 .build();
 
         mongoClient = MongoClients.create(settings);
-        hotel = mongoClient.getDatabase("hotel");
+        database = mongoClient.getDatabase(databaseName);
         if (!getDatabase().listCollectionNames().into(new ArrayList<>()).contains("rooms")) {
             createRoomsCollection();
         }
@@ -75,7 +75,7 @@ public abstract class AbstractMongoRepository implements AutoCloseable {
     }
 
     public MongoDatabase getDatabase() {
-        return hotel;
+        return database;
     }
 
     public MongoClient getMongoClient() {

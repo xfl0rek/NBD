@@ -12,7 +12,7 @@ public class ClientRepository extends AbstractMongoRepository {
     }
 
     public ClientRepository() {
-        this.initDBConnection();
+        this.initDBConnection("hotel");
     }
 
     public void create(Client client) {

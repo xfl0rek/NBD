@@ -25,7 +25,6 @@ public class RedisRoomRepository extends AbstractRedisRepository implements IRoo
             pool.set(key, json);
             pool.expire(key, 300);
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -56,6 +55,9 @@ public class RedisRoomRepository extends AbstractRedisRepository implements IRoo
         try {
             String key = hashPrefix + Long.toString(roomNumber);
             String json = pool.get(key);
+            if (json == null) {
+                return null;
+            }
             return jsonb.fromJson(json, Room.class);
         } catch (Exception e) {
             e.printStackTrace();

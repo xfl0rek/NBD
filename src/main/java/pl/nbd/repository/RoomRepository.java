@@ -15,7 +15,11 @@ public class RoomRepository extends AbstractMongoRepository implements IRoomRepo
     }
 
     public RoomRepository() {
-        this.initDBConnection();
+        this.initDBConnection("hotel");
+    }
+
+    public RoomRepository(String databaseName) {
+        this.initDBConnection(databaseName);
     }
 
     @Override
