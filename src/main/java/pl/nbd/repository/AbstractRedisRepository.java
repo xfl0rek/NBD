@@ -14,8 +14,8 @@ public abstract class AbstractRedisRepository {
 
     public void initDbConnection() {
         Properties properties = loadRedisProperties();
-        String host = properties.getProperty("redis.host", "localhost");
-        int port = Integer.parseInt(properties.getProperty("redis.port", "6379"));
+        String host = properties.getProperty("redis.host");
+        int port = Integer.parseInt(properties.getProperty("redis.port"));
         JedisClientConfig jedisClientConfig = DefaultJedisClientConfig.builder().build();
 
         pool = new JedisPooled(new HostAndPort(host, port), jedisClientConfig);
