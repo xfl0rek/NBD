@@ -15,13 +15,15 @@ import static org.junit.jupiter.api.Assertions.*;
 class RoomManagerTest {
 
     public static RoomRepository roomRepository;
-    //public static RoomManager roomManager;
+    public static RoomManager roomManager;
 
-//    @BeforeAll
-//    static void setUp() {
-//        roomRepository = new RoomRepository();
-//        roomManager = new RoomManager(roomRepository);
-//    }
+    @BeforeAll
+    static void setUp() {
+        AbstractCassandraRepository abstractCassandraRepository = new AbstractCassandraRepository();
+        CqlSession session = abstractCassandraRepository.getSession();
+        roomRepository = new RoomRepository(session);
+        roomManager = new RoomManager(roomRepository);
+    }
 //
 //    @AfterEach
 //    void dropDB() {
@@ -29,39 +31,33 @@ class RoomManagerTest {
 //        collection.drop();
 //    }
 
+
     @Test
-    void test() {
-        AbstractCassandraRepository abstractCassandraRepository = new AbstractCassandraRepository();
-        CqlSession session = abstractCassandraRepository.getSession();
-        roomRepository = new RoomRepository(session);
+    void registerRoomTest() {
+        Room room = new RoomChildren(1, 100, 2, 2);
+        Room room2 = new RoomRegular(2, 150, 4, true);
+        roomManager.registerRoom(1, 100, 2, 2);
+        roomManager.registerRoom(2, 150, 4, true);
+
+        Room readRoom = roomManager.getRoom(1);
+        Room readRoom2 = roomManager.getRoom(2);
+
+        assertEquals(room, readRoom);
+        assertEquals(room2, readRoom2);
     }
 
-//    @Test
-//    void registerRoomTest() {
-//        Room room = new RoomChildren(1, 100, 2, 2);
-//        Room room2 = new RoomRegular(2, 150, 4, true);
-//        roomManager.registerRoom(1, 100, 2, 2);
-//        roomManager.registerRoom(2, 150, 4, true);
-//
-//        Room readRoom = roomManager.getRoom(1);
-//        Room readRoom2 = roomManager.getRoom(2);
-//
-//        assertEquals(room, readRoom);
-//        assertEquals(room2, readRoom2);
-//    }
-//
-//    @Test
-//    void deleteRoomTest() {
-//        roomManager.registerRoom(1, 100, 2, true);
-//        Room room = roomManager.getRoom(1);
-//        assertNotNull(room);
-//
-//        roomManager.deleteRoom(1);
-//        Room room2 = roomManager.getRoom(1);
-//        assertNull(room2);
-//    }
-//
-//
+    @Test
+    void deleteRoomTest() {
+        roomManager.registerRoom(1, 100, 2, true);
+        Room room = roomManager.getRoom(1);
+        assertNotNull(room);
+
+        roomManager.deleteRoom(1);
+        Room room2 = roomManager.getRoom(1);
+        assertNull(room2);
+    }
+
+
 //    @Test
 //    void  updateRoomTest() {
 //        roomManager.registerRoom(1, 100, 2, 2);

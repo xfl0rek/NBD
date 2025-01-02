@@ -14,14 +14,17 @@ public class Room {
     @PartitionKey
     @CqlName("room_number")
     private long roomNumber;
+
+    private String discriminator;
     private int basePrice;
     private int roomCapacity;
     private int rented = 0;
 
-    public Room(long roomNumber, int basePrice, int roomCapacity) {
+    public Room(long roomNumber, int basePrice, int roomCapacity, String discriminator) {
         this.roomNumber = roomNumber;
         this.basePrice = basePrice;
         this.roomCapacity = roomCapacity;
+        this.discriminator = discriminator;
     }
 
     public Room() {
@@ -38,6 +41,10 @@ public class Room {
 
     public int getRoomCapacity() {
         return roomCapacity;
+    }
+
+    public String getDiscriminator() {
+        return discriminator;
     }
 
     public void setRoomNumber(long roomNumber) {
@@ -58,6 +65,10 @@ public class Room {
 
     public void setRented(int rented) {
         this.rented = rented;
+    }
+
+    public void setDiscriminator(String discriminator) {
+        this.discriminator = discriminator;
     }
 
     @Override

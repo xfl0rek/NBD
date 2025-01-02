@@ -11,13 +11,17 @@ import java.net.InetSocketAddress;
 public class AbstractCassandraRepository {
     private static CqlSession session;
 
+    public AbstractCassandraRepository() {
+        initSession();
+    }
+
     public void initSession() {
         session = CqlSession.builder()
                 .addContactPoint(new InetSocketAddress("cassandra1", 9042))
                 .addContactPoint(new InetSocketAddress("cassandra2", 9043))
                 .withLocalDatacenter("dc1")
                 .withAuthCredentials("cassandra", "cassandrapassword")
-                //.withKeyspace(CqlIdentifier.fromCql("rent_a_room")) //zakomentowac jak 1 raz
+                .withKeyspace(CqlIdentifier.fromCql("rent_a_room")) //zakomentowac jak 1 raz
                 .build();
 
         CreateKeyspace keyspace = SchemaBuilder.createKeyspace(CqlIdentifier.fromCql("rent_a_room"))
