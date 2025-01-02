@@ -1,0 +1,75 @@
+package pl.nbd.model;
+
+import com.datastax.oss.driver.api.mapper.annotations.CqlName;
+import com.datastax.oss.driver.api.mapper.annotations.Entity;
+import com.datastax.oss.driver.api.mapper.annotations.PartitionKey;
+import com.datastax.oss.driver.api.mapper.annotations.PropertyStrategy;
+
+import java.util.Objects;
+
+@Entity(defaultKeyspace = "rent_a_room")
+@CqlName("rooms")
+//@PropertyStrategy(mutable = false)//, getterStyle = getterStyle.JAVA_BEANS)
+public class Room {
+    @PartitionKey
+    @CqlName("room_number")
+    private long roomNumber;
+    private int basePrice;
+    private int roomCapacity;
+    private int rented = 0;
+
+    public Room(long roomNumber, int basePrice, int roomCapacity) {
+        this.roomNumber = roomNumber;
+        this.basePrice = basePrice;
+        this.roomCapacity = roomCapacity;
+    }
+
+    public Room() {
+
+    }
+
+    public long getRoomNumber() {
+        return roomNumber;
+    }
+
+    public int getBasePrice() {
+        return basePrice;
+    }
+
+    public int getRoomCapacity() {
+        return roomCapacity;
+    }
+
+    public void setRoomNumber(long roomNumber) {
+        this.roomNumber = roomNumber;
+    }
+
+    public void setBasePrice(int basePrice) {
+        this.basePrice = basePrice;
+    }
+
+    public void setRoomCapacity(int roomCapacity) {
+        this.roomCapacity = roomCapacity;
+    }
+
+    public int getRented() {
+        return rented;
+    }
+
+    public void setRented(int rented) {
+        this.rented = rented;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Room room = (Room) o;
+        return roomNumber == room.roomNumber && basePrice == room.basePrice && roomCapacity == room.roomCapacity;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(roomNumber, basePrice, roomCapacity);
+    }
+}
