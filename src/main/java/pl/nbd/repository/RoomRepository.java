@@ -3,6 +3,7 @@ package pl.nbd.repository;
 import com.datastax.oss.driver.api.core.CqlSession;
 import pl.nbd.dao.RoomDao;
 import pl.nbd.mappers.RoomMapper;
+import pl.nbd.mappers.RoomMapperBuilder;
 import pl.nbd.model.Room;
 
 import java.util.List;
@@ -27,9 +28,9 @@ public class RoomRepository  {
         roomDao.create(room);
     }
 
-    public List<Room> readAll(long id) {
-        return roomDao.getAllRooms(id);
-    }
+//    public List<Room> readAll(long id) {
+//        return roomDao.getAllRooms(id);
+//    }
 
 //    public Room read(long id) {
 //
