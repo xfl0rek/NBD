@@ -1,6 +1,8 @@
 package pl.nbd.managers;
 
 import com.datastax.oss.driver.api.core.CqlSession;
+import com.datastax.oss.driver.api.querybuilder.QueryBuilder;
+import com.datastax.oss.driver.api.querybuilder.truncate.Truncate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -14,22 +16,23 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class RoomManagerTest {
 
+    public static CqlSession session;
     public static RoomRepository roomRepository;
     public static RoomManager roomManager;
 
     @BeforeAll
     static void setUp() {
         AbstractCassandraRepository abstractCassandraRepository = new AbstractCassandraRepository();
-        CqlSession session = abstractCassandraRepository.getSession();
+        session = abstractCassandraRepository.getSession();
         roomRepository = new RoomRepository(session);
         roomManager = new RoomManager(roomRepository);
     }
-//
-//    @AfterEach
-//    void dropDB() {
-//        MongoCollection<Room> collection = roomManager.getAllRooms();
-//        collection.drop();
-//    }
+
+    @AfterEach
+    void dropDB() {
+        Truncate truncate = QueryBuilder.truncate("rooms");
+        session.execute(truncate.build());
+    }
 
 
     @Test
@@ -58,22 +61,22 @@ class RoomManagerTest {
     }
 
 
-//    @Test
-//    void  updateRoomTest() {
-//        roomManager.registerRoom(1, 100, 2, 2);
-//        roomManager.registerRoom(2, 150, 4, true);
-//        Room room = roomManager.getRoom(1);
-//        Room room2 = roomManager.getRoom(2);
-//        assertEquals(100, room.getBasePrice());
-//        assertEquals(4, room2.getRoomCapacity());
-//
-//
-//        roomManager.updateRoomInformation(1, 200, 2, 2);
-//        roomManager.updateRoomInformation(2, 150, 3, true);
-//        Room updatedRoom = roomManager.getRoom(1);
-//        Room updatedRoom2 = roomManager.getRoom(2);
-//        assertEquals(200, updatedRoom.getBasePrice());
-//        assertEquals(3, updatedRoom2.getRoomCapacity());
-//    }
+    @Test
+    void  updateRoomTest() {
+        roomManager.registerRoom(1, 100, 2, 2);
+        roomManager.registerRoom(2, 150, 4, true);
+        Room room = roomManager.getRoom(1);
+        Room room2 = roomManager.getRoom(2);
+        assertEquals(100, room.getBasePrice());
+        assertEquals(4, room2.getRoomCapacity());
+
+
+        roomManager.updateRoomInformation(1, 200, 2, 2);
+        roomManager.updateRoomInformation(2, 150, 3, true);
+        Room updatedRoom = roomManager.getRoom(1);
+        Room updatedRoom2 = roomManager.getRoom(2);
+        assertEquals(200, updatedRoom.getBasePrice());
+        assertEquals(3, updatedRoom2.getRoomCapacity());
+    }
 
 }

@@ -24,5 +24,9 @@ public interface RoomDao {
 
     @StatementAttributes(consistencyLevel = "QUORUM")
     @QueryProvider(providerClass = RoomProvider.class, entityHelpers = {RoomChildren.class, RoomRegular.class})
+    void update(Room room);
+
+    @StatementAttributes(consistencyLevel = "QUORUM")
+    @QueryProvider(providerClass = RoomProvider.class, entityHelpers = {RoomChildren.class, RoomRegular.class})
     void remove(long roomNumber);
 }

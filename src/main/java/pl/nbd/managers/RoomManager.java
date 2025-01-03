@@ -18,16 +18,9 @@ public class RoomManager {
         }
     }
 
-//    private boolean roomExists(int roomNumber) {
-//        MongoCollection<Room> collection = roomRepository.readAll();
-//        ArrayList<Room> rooms = collection.find().into(new ArrayList<>());
-//        for (Room room : rooms) {
-//            if (room.getRoomNumber() == roomNumber) {
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
+    private boolean roomExists(long roomNumber) {
+        return roomRepository.read(roomNumber) != null;
+    }
 
     public Room getRoom(int roomNumber) {
         return roomRepository.read(roomNumber);
@@ -38,38 +31,38 @@ public class RoomManager {
 //    }
 
     public void registerRoom(int roomNumber, int basePrice, int roomCapacity, int numberOfChildren) {
-        //if (!roomExists(roomNumber)) {
+        if (!roomExists(roomNumber)) {
             Room room = new RoomChildren(roomNumber, basePrice, roomCapacity, numberOfChildren);
             roomRepository.create(room);
-        //}
+        }
     }
 
     public void registerRoom(int roomNumber, int basePrice, int roomCapacity, boolean isBreakfastIncluded) {
-        //if (!roomExists(roomNumber)) {
+        if (!roomExists(roomNumber)) {
             Room room = new RoomRegular(roomNumber, basePrice, roomCapacity, isBreakfastIncluded);
             roomRepository.create(room);
-        //}
+        }
     }
 
     public void deleteRoom(long roomNumber) {
-        //if (roomExists(roomNumber)) {
+        if (roomExists(roomNumber)) {
             roomRepository.delete(roomNumber);
-        //}
+        }
     }
 
 
 
-//    public void updateRoomInformation(int roomNumber, int basePrice, int roomCapacity, int numberOfChildren) {
-//        if (roomExists(roomNumber)) {
-//            Room room = new RoomChildren(roomNumber, basePrice, roomCapacity, numberOfChildren);
-//            roomRepository.update(room);
-//        }
-//    }
-//
-//    public void updateRoomInformation(int roomNumber, int basePrice, int roomCapacity, boolean isBreakfastIncluded) {
-//        if (roomExists(roomNumber)) {
-//            Room room = new RoomRegular(roomNumber, basePrice, roomCapacity, isBreakfastIncluded);
-//            roomRepository.update(room);
-//        }
-//    }
+    public void updateRoomInformation(int roomNumber, int basePrice, int roomCapacity, int numberOfChildren) {
+        if (roomExists(roomNumber)) {
+            Room room = new RoomChildren(roomNumber, basePrice, roomCapacity, numberOfChildren);
+            roomRepository.update(room);
+        }
+    }
+
+    public void updateRoomInformation(int roomNumber, int basePrice, int roomCapacity, boolean isBreakfastIncluded) {
+        if (roomExists(roomNumber)) {
+            Room room = new RoomRegular(roomNumber, basePrice, roomCapacity, isBreakfastIncluded);
+            roomRepository.update(room);
+        }
+    }
 }

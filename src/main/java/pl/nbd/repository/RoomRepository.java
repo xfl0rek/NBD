@@ -13,10 +13,6 @@ import pl.nbd.model.Room;
 import java.util.List;
 
 public class RoomRepository  {
-//    @Override
-//    public void close() throws Exception {
-//
-//    }
 
     private final CqlSession session;
     private final RoomMapper roomMapper;
@@ -54,7 +50,7 @@ public class RoomRepository  {
     }
 
     public void update(Room room) {
-
+        roomDao.update(room);
     }
 
     public void delete(long roomNumber) {

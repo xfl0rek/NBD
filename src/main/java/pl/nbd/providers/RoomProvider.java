@@ -60,13 +60,18 @@ public class RoomProvider {
         Select selectRoom = QueryBuilder.selectFrom(CqlIdentifier.fromCql("rooms"))
                 .all()
                 .where(Relation.column(CqlIdentifier.fromCql("room_number")).isEqualTo(QueryBuilder.literal(roomNumber)));
-        Row row = session.execute(selectRoom.build()).one();
-        String discriminator = row.getString("discriminator");
-        return switch (discriminator) {
-            case "children" -> getChildren(row);
-            case "regular" -> getRegular(row);
-            default -> throw new IllegalArgumentException();
-        };
+        try {
+            Row row = session.execute(selectRoom.build()).one();
+            String discriminator = row.getString("discriminator");
+            return switch (discriminator) {
+                case "children" -> getChildren(row);
+                case "regular" -> getRegular(row);
+                default -> throw new IllegalArgumentException();
+            };
+        }
+        catch (NullPointerException e) {
+            return null;
+        }
     }
 
     private RoomChildren getChildren(Row row) {
@@ -86,6 +91,39 @@ public class RoomProvider {
                 row.getInt("room_capacity"),
                 row.getBoolean("breakfast_included")
         );
+    }
+
+    public void update(Room room) {
+        try {
+            session.execute(
+                    switch (room.getDiscriminator()) {
+                        case "children" -> {
+                            RoomChildren roomChildren = (RoomChildren) room;
+                            yield session.prepare(roomChildrenHelper.updateByPrimaryKey().build())
+                                    .bind()
+                                    .setInt("base_price", roomChildren.getBasePrice())
+                                    .setInt("room_capacity", roomChildren.getRoomCapacity())
+                                    .setInt("number_of_children", roomChildren.getNumberOfChildren())
+                                    .setInt("rented", roomChildren.getRented())
+                                    .setLong("room_number", roomChildren.getRoomNumber());
+                        }
+                        case "regular" -> {
+                            RoomRegular roomRegular = (RoomRegular) room;
+                            yield session.prepare(roomRegularHelper.updateByPrimaryKey().build())
+                                    .bind()
+                                    .setInt("base_price", roomRegular.getBasePrice())
+                                    .setInt("room_capacity", roomRegular.getRoomCapacity())
+                                    .setBoolean("breakfast_included", roomRegular.isBreakfastIncluded())
+                                    .setInt("rented", roomRegular.getRented())
+                                    .setLong("room_number", roomRegular.getRoomNumber());
+                        }
+                        default -> throw new IllegalArgumentException();
+                    }
+            );
+        }
+        catch (NullPointerException e) {
+            System.out.println("Room does not exist");
+        }
     }
 
     public void remove(long roomNumber) {
