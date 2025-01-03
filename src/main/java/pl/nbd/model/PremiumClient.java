@@ -1,8 +1,13 @@
 package pl.nbd.model;
 
+import com.datastax.oss.driver.api.mapper.annotations.CqlName;
+import com.datastax.oss.driver.api.mapper.annotations.Entity;
+
+@Entity(defaultKeyspace = "rent_a_room")
+@CqlName("clients")
 public class PremiumClient extends Client {
-    public PremiumClient(long personalID, String firstName, String lastName, Address address) {
-        super(personalID, firstName, lastName, address);
+    public PremiumClient(long personalID, String firstName, String lastName, boolean isArchive) {
+        super(personalID, firstName, lastName, isArchive, "premium");
     }
 
     public PremiumClient() {

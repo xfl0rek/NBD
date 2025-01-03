@@ -5,7 +5,6 @@ import com.datastax.oss.driver.api.mapper.annotations.Entity;
 
 @Entity(defaultKeyspace = "rent_a_room")
 @CqlName("rooms")
-
 public class RoomChildren extends Room {
     @CqlName("number_of_children")
     private int numberOfChildren;

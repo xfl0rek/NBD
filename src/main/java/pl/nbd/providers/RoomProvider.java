@@ -68,8 +68,7 @@ public class RoomProvider {
                 case "regular" -> getRegular(row);
                 default -> throw new IllegalArgumentException();
             };
-        }
-        catch (NullPointerException e) {
+        } catch (NullPointerException e) {
             return null;
         }
     }

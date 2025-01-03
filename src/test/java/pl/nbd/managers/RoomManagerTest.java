@@ -16,9 +16,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class RoomManagerTest {
 
-    public static CqlSession session;
-    public static RoomRepository roomRepository;
-    public static RoomManager roomManager;
+    private static CqlSession session;
+    private static RoomRepository roomRepository;
+    private static RoomManager roomManager;
 
     @BeforeAll
     static void setUp() {
