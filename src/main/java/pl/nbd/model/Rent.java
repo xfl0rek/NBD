@@ -23,6 +23,16 @@ public class Rent {
         this.rentCost = 0;
     }
 
+    public Rent(long id, Client client, Room room, LocalDateTime beginTime, LocalDateTime endTime, double rentCost, boolean isArchive) {
+        this.id = id;
+        this.client = client;
+        this.room = room;
+        this.beginTime = beginTime;
+        this.endTime = endTime;
+        this.rentCost = rentCost;
+        this.isArchive = isArchive;
+    }
+
     public Rent() {
 
     }
