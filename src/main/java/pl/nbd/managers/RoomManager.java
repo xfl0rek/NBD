@@ -26,10 +26,6 @@ public class RoomManager {
         return roomRepository.read(roomNumber);
     }
 
-//    public MongoCollection<Room> getAllRooms() {
-//        return roomRepository.readAll();
-//    }
-
     public void registerRoom(int roomNumber, int basePrice, int roomCapacity, int numberOfChildren) {
         if (!roomExists(roomNumber)) {
             Room room = new RoomChildren(roomNumber, basePrice, roomCapacity, numberOfChildren);

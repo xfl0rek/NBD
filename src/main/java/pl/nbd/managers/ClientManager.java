@@ -5,8 +5,6 @@ import pl.nbd.model.DefaultClient;
 import pl.nbd.model.PremiumClient;
 import pl.nbd.repository.ClientRepository;
 
-import java.util.ArrayList;
-
 public class ClientManager {
     private ClientRepository clientRepository;
 
@@ -25,10 +23,6 @@ public class ClientManager {
     public Client getClient(int personalID) {
         return this.clientRepository.read(personalID);
     }
-
-//    public MongoCollection<Client> getAllClients() {
-//        return clientRepository.readAll();
-//    }
 
     public void registerClient(int personalID, String firstName, String lastName, String type, boolean isArchive) {
         if (!clientExists(personalID)) {

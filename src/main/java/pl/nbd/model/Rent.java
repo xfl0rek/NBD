@@ -7,7 +7,9 @@ import java.util.Objects;
 
 public class Rent {
     private long id;
+    private long clientId;
     private Client client;
+    private long roomNumber;
     private Room room;
     private LocalDateTime beginTime;
     private LocalDateTime endTime;
@@ -27,6 +29,16 @@ public class Rent {
         this.id = id;
         this.client = client;
         this.room = room;
+        this.beginTime = beginTime;
+        this.endTime = endTime;
+        this.rentCost = rentCost;
+        this.isArchive = isArchive;
+    }
+
+    public Rent(long id, long clientId, long roomNumber, LocalDateTime beginTime, LocalDateTime endTime, double rentCost, boolean isArchive) {
+        this.id = id;
+        this.clientId = clientId;
+        this.roomNumber = roomNumber;
         this.beginTime = beginTime;
         this.endTime = endTime;
         this.rentCost = rentCost;

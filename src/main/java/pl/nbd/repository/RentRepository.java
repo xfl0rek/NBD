@@ -5,8 +5,12 @@ import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.driver.api.core.cql.SimpleStatement;
 import com.datastax.oss.driver.api.core.type.DataTypes;
 import com.datastax.oss.driver.api.querybuilder.SchemaBuilder;
+import pl.nbd.dao.RentDao;
+import pl.nbd.mappers.RentMapper;
+import pl.nbd.mappers.RentMapperBuilder;
 import pl.nbd.model.Rent;
-import pl.nbd.model.Room;
+
+import java.util.List;
 
 public class RentRepository extends AbstractCassandraRepository {
 
@@ -14,8 +18,8 @@ public class RentRepository extends AbstractCassandraRepository {
     private final RentMapper rentMapper;
     private final RentDao rentDao;
 
-    public RentRepository() {
-        this.session = getSession();
+    public RentRepository(CqlSession session) {
+        this.session = session;
         makeTable();
         this.rentMapper = new RentMapperBuilder(session).build();
         this.rentDao = rentMapper.rentDao();
@@ -30,7 +34,7 @@ public class RentRepository extends AbstractCassandraRepository {
                         .withColumn("room_number", DataTypes.BIGINT)
                         .withColumn("start_date", DataTypes.TIMESTAMP)
                         .withColumn("end_date", DataTypes.TIMESTAMP)
-                        .withColumn("price", DataTypes.DECIMAL)
+                        .withColumn("price", DataTypes.DOUBLE)
                         .withColumn("archive", DataTypes.BOOLEAN)
                         .build();
         session.execute(createRentsByClient);
@@ -43,29 +47,29 @@ public class RentRepository extends AbstractCassandraRepository {
                         .withColumn("client_id", DataTypes.BIGINT)
                         .withColumn("start_date", DataTypes.TIMESTAMP)
                         .withColumn("end_date", DataTypes.TIMESTAMP)
-                        .withColumn("price", DataTypes.DECIMAL)
+                        .withColumn("price", DataTypes.DOUBLE)
                         .withColumn("archive", DataTypes.BOOLEAN)
                         .build();
         session.execute(createRentsByRoom);
     }
 
     public void create(Rent rent) {
-
+        rentDao.create(rent);
     }
 
-
-//    public MongoCollection<Rent> readAll() {
-//
+//    public Rent findById(long id) {
+//        return rentDao.findById(id);
 //    }
 
-    public Rent read(long id) {
+    public List<Rent> findByClientId(long id) {
+        return rentDao.findByClientId(id);
+    }
 
+      public List<Rent> findByRoomNumber(long roomNumber) {
+        return rentDao.findByRoomNumber(roomNumber);
     }
 
     public void update(Rent rent) {
-
-    }
-
-    public void delete(long id) {
+        rentDao.update(rent);
     }
 }
