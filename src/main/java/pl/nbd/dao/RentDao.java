@@ -29,4 +29,8 @@ public interface RentDao {
     @StatementAttributes(consistencyLevel = "ONE", pageSize = 100)
     @QueryProvider(providerClass = RentProvider.class)
     List<Rent> findByRoomNumber(long roomNumber);
+
+    @StatementAttributes(consistencyLevel = "QUORUM")
+    @QueryProvider(providerClass = RentProvider.class)
+    void remove(Rent rent);
 }

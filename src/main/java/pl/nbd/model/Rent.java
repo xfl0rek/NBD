@@ -23,6 +23,9 @@ public class Rent {
         this.beginTime = (beginTime == null) ? LocalDateTime.now() : beginTime;
         this.endTime = null;
         this.rentCost = 0;
+        this.isArchive = false;
+        this.clientId = client.getPersonalID();
+        this.roomNumber = room.getRoomNumber();
     }
 
     public Rent(long id, Client client, Room room, LocalDateTime beginTime, LocalDateTime endTime, double rentCost, boolean isArchive) {
@@ -33,6 +36,8 @@ public class Rent {
         this.endTime = endTime;
         this.rentCost = rentCost;
         this.isArchive = isArchive;
+        this.roomNumber = room.getRoomNumber();
+        this.clientId = client.getPersonalID();
     }
 
     public Rent(long id, long clientId, long roomNumber, LocalDateTime beginTime, LocalDateTime endTime, double rentCost, boolean isArchive) {
@@ -103,6 +108,22 @@ public class Rent {
 
     public void setArchive(boolean archive) {
         isArchive = archive;
+    }
+
+    public void setClientId(long clientId) {
+        this.clientId = clientId;
+    }
+
+    public void setRoomNumber(long roomNumber) {
+        this.roomNumber = roomNumber;
+    }
+
+    public long getClientId() {
+        return clientId;
+    }
+
+    public long getRoomNumber() {
+        return roomNumber;
     }
 
     public void endRent(LocalDateTime endTime) {

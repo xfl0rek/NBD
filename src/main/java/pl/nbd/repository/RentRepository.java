@@ -72,4 +72,8 @@ public class RentRepository extends AbstractCassandraRepository {
     public void update(Rent rent) {
         rentDao.update(rent);
     }
+
+    public void delete(Rent rent) {
+        rentDao.remove(rent);
+    }
 }
