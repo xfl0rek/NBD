@@ -57,9 +57,6 @@ public class RentRepository extends AbstractCassandraRepository {
         rentDao.create(rent);
     }
 
-//    public Rent findById(long id) {
-//        return rentDao.findById(id);
-//    }
 
     public List<Rent> findByClientId(long id) {
         return rentDao.findByClientId(id);

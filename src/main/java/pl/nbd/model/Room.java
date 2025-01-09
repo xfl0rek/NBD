@@ -3,13 +3,11 @@ package pl.nbd.model;
 import com.datastax.oss.driver.api.mapper.annotations.CqlName;
 import com.datastax.oss.driver.api.mapper.annotations.Entity;
 import com.datastax.oss.driver.api.mapper.annotations.PartitionKey;
-import com.datastax.oss.driver.api.mapper.annotations.PropertyStrategy;
 
 import java.util.Objects;
 
 @Entity(defaultKeyspace = "rent_a_room")
 @CqlName("rooms")
-//@PropertyStrategy(mutable = false)//, getterStyle = getterStyle.JAVA_BEANS)
 public class Room {
     @PartitionKey
     @CqlName("room_number")

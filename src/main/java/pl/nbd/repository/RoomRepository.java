@@ -10,8 +10,6 @@ import pl.nbd.mappers.RoomMapper;
 import pl.nbd.mappers.RoomMapperBuilder;
 import pl.nbd.model.Room;
 
-import java.util.List;
-
 public class RoomRepository  {
 
     private final CqlSession session;

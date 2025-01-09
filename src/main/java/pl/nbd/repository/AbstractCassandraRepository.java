@@ -3,14 +3,11 @@ package pl.nbd.repository;
 import com.datastax.oss.driver.api.core.CqlIdentifier;
 import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.driver.api.core.cql.SimpleStatement;
-import com.datastax.oss.driver.api.core.type.codec.TypeCodec;
-import com.datastax.oss.driver.api.core.type.codec.registry.CodecRegistry;
 import com.datastax.oss.driver.api.querybuilder.SchemaBuilder;
 import com.datastax.oss.driver.api.querybuilder.schema.CreateKeyspace;
 import pl.nbd.codec.TimeCodec;
 
 import java.net.InetSocketAddress;
-import java.time.Instant;
 
 public class AbstractCassandraRepository {
     private static CqlSession session;

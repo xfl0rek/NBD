@@ -34,8 +34,6 @@ class ClientManagerTest {
     void dropDB() {
         Truncate truncate = QueryBuilder.truncate("clients");
         session.execute(truncate.build());
-//        Truncate truncate2 = QueryBuilder.truncate("addresses");
-//        session.execute(truncate2.build());
     }
 
     @Test

@@ -18,10 +18,6 @@ public interface RentDao {
     @QueryProvider(providerClass = RentProvider.class)
     void update(Rent rent);
 
-//    @StatementAttributes(consistencyLevel = "ONE", pageSize = 100)
-//    @QueryProvider(providerClass = RentProvider.class)
-//    Rent findById(long rentId);
-
     @StatementAttributes(consistencyLevel = "ONE", pageSize = 100)
     @QueryProvider(providerClass = RentProvider.class)
     List<Rent> findByClientId(long clientId);

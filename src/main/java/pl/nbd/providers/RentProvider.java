@@ -54,8 +54,7 @@ public class RentProvider {
                 .value(START_DATE, literal(rent.getBeginTime(), timeCodec))
                 .value(END_DATE, literal(rent.getEndTime(), timeCodec))
                 .value(PRICE, literal(rent.getRentCost()))
-                .value(ARCHIVE, literal(rent.isArchive()))
-                .ifNotExists();
+                .value(ARCHIVE, literal(rent.isArchive()));
 
         Insert insertRoom = QueryBuilder.insertInto(RENTS_BY_ROOM)
                 .value(ROOM_NUMBER, literal(rent.getRoom().getRoomNumber()))
@@ -64,28 +63,16 @@ public class RentProvider {
                 .value(START_DATE, literal(rent.getBeginTime(), timeCodec))
                 .value(END_DATE, literal(rent.getEndTime(), timeCodec))
                 .value(PRICE, literal(rent.getRentCost()))
-                .value(ARCHIVE, literal(rent.isArchive()))
-                .ifNotExists();
+                .value(ARCHIVE, literal(rent.isArchive()));
 
-//        BatchStatement batchStatement = BatchStatement.builder(BatchType.LOGGED)
-//                .addStatement(insertClient.build())
-//                .addStatement(insertRoom.build())
-//                .build();
-//
-//        session.execute(batchStatement);
-        session.execute(insertClient.build());
-        session.execute(insertRoom.build());
+        BatchStatement batchStatement = BatchStatement.builder(BatchType.LOGGED)
+                .addStatement(insertClient.build())
+                .addStatement(insertRoom.build())
+                .build();
+
+        session.execute(batchStatement);
     }
 
-//    public Rent findById(long rentId) {
-//        Select select = QueryBuilder.selectFrom(RENTS_BY_CLIENT)
-//                .all()
-//                .where(Relation.column(RENT_ID).isEqualTo(literal(rentId)))
-//        ResultSet resultSet = session.execute(select.build());
-//        List<Row> rows = resultSet.all();
-//
-//        return convertRowsToRents(rows).get(0);
-//    }
 
     public List<Rent> findByClientId(long clientId) {
         Select select = QueryBuilder.selectFrom(RENTS_BY_CLIENT)

@@ -9,7 +9,6 @@ import pl.nbd.repository.RentRepository;
 import pl.nbd.repository.RoomRepository;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class RentManager {
@@ -39,13 +38,6 @@ public class RentManager {
         return !rentRepository.findByClientId(id).isEmpty();
     }
 
-//    public Rent getRent(int id) {
-//        return rentRepository.findById(id);
-//    }
-
-//    public MongoCollection<Rent> getAllRents() {
-//        return rentRepository.readAll();
-//    }
 
     public void rentRoom(int id, Client client, Room room, LocalDateTime startDate) {
         if (!rentExists(id)) {
