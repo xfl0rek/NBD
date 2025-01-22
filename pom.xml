@@ -60,6 +60,21 @@
             <artifactId>hibernate-validator</artifactId>
             <version>8.0.1.Final</version>
         </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-avro</artifactId>
+            <version>2.16.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+            <version>3.6.1</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.json.bind</groupId>
+            <artifactId>javax.json.bind-api</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -106,6 +121,48 @@
                 <artifactId>maven-site-plugin</artifactId>
                 <version>4.0.0-M8</version>
             </plugin>
+
+<!--            <plugin>-->
+<!--            <groupId>org.apache.avro</groupId>-->
+<!--            <artifactId>avro-maven-plugin</artifactId>-->
+<!--            <version>1.11.3</version>-->
+<!--            <executions>-->
+<!--                <execution>-->
+<!--                    <phase>generate-test-sources</phase>-->
+<!--                    <goals>-->
+<!--                        <goal>schema</goal>-->
+<!--                    </goals>-->
+<!--                    <configuration>-->
+<!--                        <testSourceDirectory>${project.basedir}/src/test/avro</testSourceDirectory>-->
+<!--                        <testOutputDirectory>${project.build.directory}/generated-test_sources/avro</testOutputDirectory>-->
+<!--                        <includes>-->
+<!--                            <include>**/*.avro</include>-->
+<!--                        </includes>-->
+<!--                        <testIncludes>-->
+<!--                            <testInclude>**/*.testavro</testInclude>-->
+<!--                        </testIncludes>-->
+<!--                    </configuration>-->
+<!--                </execution>-->
+<!--            </executions>-->
+<!--        </plugin>-->
+<!--            <plugin>-->
+<!--                <groupId>org.codehaus.mojo</groupId>-->
+<!--                <artifactId>build-helper-maven-plugin</artifactId>-->
+<!--                <version>3.5.0</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <phase>generate-test-sources</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>add-test-source</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <sources>-->
+<!--                                <source>${project.build.directory}/generated-sources/avro</source>-->
+<!--                            </sources>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 
