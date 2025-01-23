@@ -48,7 +48,6 @@ public class Consumer {
             kafkaConsumer.seekToBeginning(consumerAssignment);
             Duration timeout = Duration.ofMillis(100);
             MessageFormat  messageFormat = new MessageFormat("ConsumerGroup {5}, Topic {0}, partition {1}, offset {2, number, integer}, key {3}, value {4}");
-
             while (true) {
                 ConsumerRecords<Long, String> records = kafkaConsumer.poll(timeout);
                 for (ConsumerRecord<Long, String> record : records) {

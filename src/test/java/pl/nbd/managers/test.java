@@ -20,10 +20,10 @@ public class test {
         KafkaProducent kafkaProducent = new KafkaProducent();
         kafkaProducent.sendRent(rent);
         Consumer consumer = new Consumer(3);
-        consumer.initConsumers();
+ //       consumer.initConsumers();
 
-        for (KafkaConsumer<Long, String> kafkaConsumer : consumer.getKafkaConsumers()) {
-            new Thread(() -> consumer.consume(kafkaConsumer)).start();
-        }
+//        for (KafkaConsumer<Long, String> kafkaConsumer : consumer.getKafkaConsumers()) {
+//            new Thread(() -> consumer.consume(kafkaConsumer)).start();
+//        }
     }
 }

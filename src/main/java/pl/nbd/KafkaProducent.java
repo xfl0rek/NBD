@@ -53,6 +53,7 @@ public class KafkaProducent {
 
         System.out.println("Sending rent: " + rentJSON);
     kafkaProducer.send(record, this::onCompletion);
+        //kafkaProducer.flush();
         System.out.println("Sent rent: " + rentJSON);
     }
 
