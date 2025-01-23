@@ -17,9 +17,11 @@ import java.util.*;
 public class Consumer {
     private final List<KafkaConsumer<Long, String>> kafkaConsumers = new ArrayList<>();
     private int numberOfConsumers;
+    private MessageRepo messageRepo;
 
     public Consumer(int numberOfConsumers) {
         this.numberOfConsumers = numberOfConsumers;
+        this.messageRepo = new MessageRepo();
     }
 
     public List<KafkaConsumer<Long, String>> getKafkaConsumers() {
@@ -57,6 +59,8 @@ public class Consumer {
                     });
 
                     System.out.println(result);
+
+                    messageRepo.saveMessage(record.value());
                 }
             }
         } catch (WakeupException wakeupException) {

@@ -16,9 +16,7 @@ import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.Conventions;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.conversions.Bson;
-import pl.nbd.model.Room;
-import pl.nbd.model.RoomChildren;
-import pl.nbd.model.RoomRegular;
+import pl.nbd.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +33,7 @@ public abstract class AbstractMongoRepository implements AutoCloseable {
     private CodecRegistry pojoCodecRegistry = CodecRegistries.fromProviders(
             PojoCodecProvider.builder()
                     .automatic(true)
-                    .register(Room.class, RoomRegular.class, RoomChildren.class)
+                    .register(Room.class, RoomRegular.class, RoomChildren.class, Client.class, DefaultClient.class, PremiumClient.class)
                     .conventions(List.of(Conventions.ANNOTATION_CONVENTION))
                     .build()
     );
@@ -49,7 +47,7 @@ public abstract class AbstractMongoRepository implements AutoCloseable {
                 .applyConnectionString(connectionString)
                 .uuidRepresentation(UuidRepresentation.STANDARD)
                 .codecRegistry(CodecRegistries.fromRegistries(MongoClientSettings.
-                        getDefaultCodecRegistry(),
+                                getDefaultCodecRegistry(),
                         pojoCodecRegistry))
                 .build();
 

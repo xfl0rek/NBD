@@ -15,7 +15,7 @@ import org.apache.kafka.common.KafkaFuture;
 import org.apache.kafka.common.serialization.LongSerializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.codehaus.jackson.annotate.JsonBackReference;
-import pl.nbd.model.Rent;
+import pl.nbd.model.*;
 
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
@@ -45,22 +45,19 @@ public class KafkaProducent {
 
 
     public void sendRent(Rent rent) throws InterruptedException {
-        createTopic();
-        Jsonb jsonb = JsonbBuilder.create();
-        String rentJSON = jsonb.toJson(rent);
+        //createTopic();
+
+        RentWrapper rentWrapper = new RentWrapper(rent, "Wypozyczalnia");
+        String rentJSON = jsonb.toJson(rentWrapper);
+
 
         ProducerRecord<Long, String> record = new ProducerRecord<>(RENT_TOPIC, rent.getId(), rentJSON);
 
-        System.out.println("Sending rent: " + rentJSON);
     kafkaProducer.send(record, this::onCompletion);
-        //kafkaProducer.flush();
-        System.out.println("Sent rent: " + rentJSON);
     }
 
     private void onCompletion(RecordMetadata metadata, Exception exception) {
-        System.out.println("Record sent");
         if (exception == null) {
-            System.out.println("Record sent with key " + metadata.offset());
             System.out.println(metadata.offset());
         } else {
             System.out.println(exception);

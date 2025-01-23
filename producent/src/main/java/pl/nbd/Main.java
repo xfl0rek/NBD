@@ -1,7 +1,9 @@
 package pl.nbd;
 
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import pl.nbd.managers.RentManager;
 import pl.nbd.model.*;
+import pl.nbd.repository.RentRepository;
 
 import java.time.LocalDateTime;
 import java.util.concurrent.ExecutionException;
@@ -12,11 +14,12 @@ public class Main {
         Client client = new DefaultClient(1, "Syn", "Hymel", address);
         Room room = new RoomRegular(1, 100, 2, true);
         LocalDateTime startDate = LocalDateTime.now();
-        Rent rent = new Rent(1, client, room, startDate);
+        RentRepository rentRepository = new RentRepository();
+        RentManager rentManager = new RentManager(rentRepository);
+        rentManager.rentRoom(1, client, room, startDate);
         KafkaProducent kafkaProducent = new KafkaProducent();
-        while (true) {
-            kafkaProducent.sendRent(rent);
-            Thread.sleep(10000);
-        }
+        Rent rent = rentManager.getRent(1);
+        kafkaProducent.sendRent(rent);
+        rentManager.returnRoom(1, LocalDateTime.now());
     }
 }
