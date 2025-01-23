@@ -1,4 +1,4 @@
-package pl.nbd.repository;
+package pl.nbd;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
@@ -16,9 +16,6 @@ import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.Conventions;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.conversions.Bson;
-import pl.nbd.model.Room;
-import pl.nbd.model.RoomChildren;
-import pl.nbd.model.RoomRegular;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,14 +29,6 @@ public abstract class AbstractMongoRepository implements AutoCloseable {
             "admin", "admin", "adminpassword".toCharArray()
     );
 
-    private CodecRegistry pojoCodecRegistry = CodecRegistries.fromProviders(
-            PojoCodecProvider.builder()
-                    .automatic(true)
-                    .register(Room.class, RoomRegular.class, RoomChildren.class)
-                    .conventions(List.of(Conventions.ANNOTATION_CONVENTION))
-                    .build()
-    );
-
     private MongoClient mongoClient;
     private MongoDatabase hotel;
 
@@ -49,8 +38,8 @@ public abstract class AbstractMongoRepository implements AutoCloseable {
                 .applyConnectionString(connectionString)
                 .uuidRepresentation(UuidRepresentation.STANDARD)
                 .codecRegistry(CodecRegistries.fromRegistries(MongoClientSettings.
-                        getDefaultCodecRegistry(),
-                        pojoCodecRegistry))
+                        getDefaultCodecRegistry()
+                        ))
                 .build();
 
         mongoClient = MongoClients.create(settings);
