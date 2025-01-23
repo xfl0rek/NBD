@@ -2,7 +2,6 @@ package pl.nbd;
 
 import java.util.List;
 import java.util.Properties;
-import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 
@@ -14,7 +13,6 @@ import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.KafkaFuture;
 import org.apache.kafka.common.serialization.LongSerializer;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.codehaus.jackson.annotate.JsonBackReference;
 import pl.nbd.model.*;
 
 import jakarta.json.bind.Jsonb;

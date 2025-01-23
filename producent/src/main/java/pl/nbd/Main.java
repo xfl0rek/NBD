@@ -1,6 +1,5 @@
 package pl.nbd;
 
-import org.apache.kafka.clients.consumer.KafkaConsumer;
 import pl.nbd.managers.RentManager;
 import pl.nbd.model.*;
 import pl.nbd.repository.RentRepository;
