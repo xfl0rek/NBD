@@ -12,13 +12,9 @@ import com.mongodb.client.model.ValidationOptions;
 import org.bson.BsonType;
 import org.bson.UuidRepresentation;
 import org.bson.codecs.configuration.CodecRegistries;
-import org.bson.codecs.configuration.CodecRegistry;
-import org.bson.codecs.pojo.Conventions;
-import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.conversions.Bson;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public abstract class AbstractMongoRepository implements AutoCloseable {
     private ConnectionString connectionString = new ConnectionString(
