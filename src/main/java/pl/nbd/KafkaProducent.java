@@ -45,7 +45,7 @@ public class KafkaProducent {
 
 
     public void sendRent(Rent rent) throws InterruptedException {
-        //createTopic();
+        createTopic();
         Jsonb jsonb = JsonbBuilder.create();
         String rentJSON = jsonb.toJson(rent);
 

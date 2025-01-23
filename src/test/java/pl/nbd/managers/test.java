@@ -1,6 +1,8 @@
 package pl.nbd.managers;
 
+import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.junit.jupiter.api.Test;
+import pl.nbd.Consumer;
 import pl.nbd.KafkaProducent;
 import pl.nbd.model.*;
 
@@ -17,6 +19,11 @@ public class test {
         Rent rent = new Rent(1, client, room, startDate);
         KafkaProducent kafkaProducent = new KafkaProducent();
         kafkaProducent.sendRent(rent);
+        Consumer consumer = new Consumer(3);
+        consumer.initConsumers();
 
+        for (KafkaConsumer<Long, String> kafkaConsumer : consumer.getKafkaConsumers()) {
+            new Thread(() -> consumer.consume(kafkaConsumer)).start();
+        }
     }
 }
